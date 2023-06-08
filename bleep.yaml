@@ -1,0 +1,37 @@
+$schema: https://raw.githubusercontent.com/oyvindberg/bleep/master/schema.json
+$version: 0.0.2
+projects:
+  pfp-in-scala:
+    dependencies:
+      - co.fs2::fs2-core:3.7.0
+      - dev.optics::monocle-core:3.2.0
+      - dev.optics::monocle-macro:3.2.0
+      - eu.timepit::refined-cats:0.10.3
+      - eu.timepit::refined:0.10.3
+      - org.typelevel::cats-core:2.9.0
+      - org.typelevel::cats-effect:3.5.0
+      - org.typelevel::cats-mtl:1.3.0
+    extends: template-common
+    sbt-scope: main
+  pfp-in-scala-test:
+    dependsOn: pfp-in-scala
+    extends: template-common
+    isTestProject: true
+    sbt-scope: test
+  scripts:
+    dependencies: build.bleep::bleep-core:${BLEEP_VERSION}
+    platform:
+      name: jvm
+    scala:
+      version: 3.3.0
+templates:
+  template-common:
+    folder: .
+    platform:
+      name: jvm
+    scala:
+      options: -Wconf:cat=unused:info -Wunused:explicits -Wunused:implicits -Wunused:imports -Wunused:locals -Wunused:nowarn
+        -Wunused:params -Wunused:privates -Wvalue-discard -Xfatal-warnings -encoding utf8 -explaintypes -feature -language:existentials
+        -language:experimental.macros -language:higherKinds -language:implicitConversions
+        -unchecked
+      version: 3.3.0
