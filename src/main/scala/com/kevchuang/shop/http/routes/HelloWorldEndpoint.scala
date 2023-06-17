@@ -1,4 +1,4 @@
-package com.kevchuang.endpoint
+package com.kevchuang.shop.http.routes
 
 import cats.Monad
 import cats.effect.kernel.Async

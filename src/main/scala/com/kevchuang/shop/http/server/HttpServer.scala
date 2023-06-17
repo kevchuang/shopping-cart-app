@@ -1,8 +1,8 @@
-package com.kevchuang.server
+package com.kevchuang.shop.http.server
 
 import cats.effect.Async
 import cats.effect.kernel.Resource
-import com.kevchuang.endpoint.HelloWorldEndpoint
+import com.kevchuang.shop.http.routes.HelloWorldEndpoint
 import fs2.io.net.Network
 import org.http4s.ember.server.EmberServerBuilder
 import org.http4s.server.{Router, Server}

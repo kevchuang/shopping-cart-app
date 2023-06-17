@@ -1,7 +1,7 @@
-package com.kevchuang
+package com.kevchuang.shop
 
 import cats.effect.{ExitCode, IO, IOApp}
-import com.kevchuang.server.HttpServer
+import com.kevchuang.shop.http.server.HttpServer
 
 object Main extends IOApp:
   override def run(args: List[String]): IO[ExitCode] =
