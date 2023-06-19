@@ -1,15 +1,31 @@
 package com.kevchuang.shop.config
 
 import ciris.Secret
-import eu.timepit.refined.types.net.UserPortNumber
-import eu.timepit.refined.types.numeric.PosInt
+import com.kevchuang.shop.config.PostgreSQLConfig.*
 import eu.timepit.refined.types.string.NonEmptyString
 
 final case class PostgreSQLConfig(
-    host: NonEmptyString,
-    port: UserPortNumber,
-    user: NonEmptyString,
+    host: HostName,
+    port: PortNumber,
+    user: UserName,
     password: Secret[NonEmptyString],
-    database: NonEmptyString,
-    max: PosInt
+    database: DatabaseName,
+    max: Int
 )
+
+object PostgreSQLConfig:
+  opaque type HostName <: String = String
+  object HostName:
+    def apply(s: String): HostName = s
+
+  opaque type PortNumber <: Int = Int
+  object PortNumber:
+    def apply(p: Int): PortNumber = p
+
+  opaque type UserName <: String = String
+  object UserName:
+    def apply(s: String): UserName = s
+
+  opaque type DatabaseName <: String = String
+  object DatabaseName:
+    def apply(s: String): DatabaseName = s

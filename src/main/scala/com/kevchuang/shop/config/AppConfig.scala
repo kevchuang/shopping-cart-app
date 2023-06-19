@@ -4,13 +4,10 @@ import cats.effect.kernel.Async
 import ciris.*
 import ciris.refined.*
 import com.comcast.ip4s.*
+import com.kevchuang.shop.config.PostgreSQLConfig.*
 import eu.timepit.refined.*
-import eu.timepit.refined.auto.*
 import eu.timepit.refined.cats.*
-import eu.timepit.refined.types.string.*
-import cats.syntax.*
-import eu.timepit.refined.api.Refined
-import eu.timepit.refined.numeric.*
+import eu.timepit.refined.types.string.NonEmptyString
 
 final case class AppConfig(
     httpServerConfig: HttpServerConfig,
@@ -32,11 +29,11 @@ object AppConfig:
           port = port"8080"
         ),
         PostgreSQLConfig(
-          host = "localhost",
-          port = 5432,
-          user = "postgres",
+          host = HostName("localhost"),
+          port = PortNumber(5432),
+          user = UserName("postgres"),
           password = postgrePassword,
-          database = "store",
+          database = DatabaseName("store"),
           max = 10
         )
       )
