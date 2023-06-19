@@ -15,9 +15,7 @@ final case class AppConfig(
 )
 
 object AppConfig:
-  def load[F[_]: Async]: F[AppConfig] =
-    default[F]
-      .load[F]
+  def load[F[_]: Async]: F[AppConfig] = default[F].load[F]
 
   private def default[F[_]]: ConfigValue[F, AppConfig] =
     (
