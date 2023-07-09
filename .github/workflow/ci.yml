@@ -1,0 +1,39 @@
+name: Scala
+
+on:
+  pull_request: {}
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-18.04
+    strategy:
+      matrix:
+        java:
+          - graalvm11-ce
+    steps:
+      - uses: actions/checkout@v2.3.2
+
+      - name: "Cache for sbt & coursier ♨️"
+        uses: coursier/cache-action@v4.1
+
+      - name: "Starting up Postgres & Redis 🐳"
+        run: docker-compose up -d
+
+      - name: "Install Nix ❄️"
+        uses: cachix/install-nix-action@v13
+
+      - name: "Install Cachix ❄️"
+        uses: cachix/cachix-action@v10
+        with:
+          name: shopping-cart-app
+          signingKey: "${{ secrets.CACHIX_SIGNING_KEY }}"
+
+      - name: "Run with ${{ matrix.java }} 🚀"
+        run: nix-shell --argstr jdk "${{ matrix.java }}" --run "sbt 'scalafmtCheckAll;test;it:test'"
+
+      - name: "Shutting down Postgres & Redis 🐳"
+        run: docker-compose down
