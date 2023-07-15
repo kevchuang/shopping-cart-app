@@ -14,7 +14,9 @@ import skunk.implicits.*
 import natchez.Trace.Implicits.noop
 
 object PostgreSQL:
-  def make[F[_]: Concurrent: Console: Logger: Network: Temporal](config: PostgreSQLConfig): SessionPool[F] =
+  def make[F[_]: Concurrent: Console: Logger: Network: Temporal](
+      config: PostgreSQLConfig
+  ): SessionPool[F] =
     def checkPostgresConnection(
         postgres: Resource[F, Session[F]]
     ): F[Unit] =
