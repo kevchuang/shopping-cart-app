@@ -1,5 +1,6 @@
 import com.typesafe.sbt.SbtNativePackager.Docker
 import com.typesafe.sbt.packager.Keys.*
+import org.scalafmt.sbt.ScalafmtPlugin.autoImport.scalafmtOnCompile
 import sbt.Keys.*
 import sbt.*
 
@@ -19,9 +20,11 @@ object BuildHelper {
     organizationName := "kevchuang"
   )
 
-  def standardSettings: List[Setting[? >: String & Task[Seq[String]] & Boolean]] = List(
+  def standardSettings
+  : List[Setting[? >: String & Task[Seq[String]] & Boolean]] = List(
     ThisBuild / scalaVersion := scala3,
     scalacOptions := ScalaSettings.baseSettings,
+    scalafmtOnCompile := true,
     Test / parallelExecution := true,
     ThisBuild / fork := true,
     run / fork := true
