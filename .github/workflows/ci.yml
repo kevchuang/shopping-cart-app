@@ -9,7 +9,7 @@ on:
 jobs:
   build:
     name: Build
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         java:
@@ -25,12 +25,6 @@ jobs:
 
       - name: "Install Nix ❄️"
         uses: cachix/install-nix-action@v13
-
-      - name: "Install Cachix ❄️"
-        uses: cachix/cachix-action@v10
-        with:
-          name: shopping-cart-app
-          signingKey: "${{ secrets.CACHIX_SIGNING_KEY }}"
 
       - name: "Run with ${{ matrix.java }} 🚀"
         run: nix-shell --argstr jdk "${{ matrix.java }}" --run "sbt 'scalafmtCheckAll;test;it:test'"

@@ -6,6 +6,8 @@ lazy val root = (project in file("."))
   .settings(nameSettings)
   .settings(standardSettings)
   .settings(dockerSettings)
+  .configs(IntegrationTest.extend(Test))
+  .settings(Defaults.itSettings)
   .settings(
     libraryDependencies ++=
       Dependencies.cats ++
