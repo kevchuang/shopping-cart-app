@@ -10,7 +10,7 @@ sealed abstract class Services[F[_]] private (
 )
 
 object Services:
-  def make[F[_]](postgres: Resource[F, Session[F]]): Services[F] =
+  def make[F[_]: Temporal](postgres: Resource[F, Session[F]]): Services[F] =
     new Services[F](
       brands = Brands.make[F](postgres)
     ) {}
