@@ -1,26 +1,23 @@
 package com.kevchuang.shop.http.routes
 
-import cats.Monad
 import cats.effect.kernel.Async
+import com.kevchuang.shop.domain.brand.Brand
 import com.kevchuang.shop.services.Brands
+import io.circe.generic.auto.*
 import org.http4s.HttpRoutes
-import sttp.tapir.Endpoint
-import sttp.tapir.*
-import sttp.tapir.server.http4s.Http4sServerInterpreter
+import org.http4s.circe.CirceEntityEncoder.*
+import org.http4s.dsl.Http4sDsl
+import org.http4s.server.Router
 
 final case class BrandsRoutes[F[_]: Async](
     brands: Brands[F]
-):
-  private val getBrandsEndpoint: Endpoint[Unit, Unit, Unit, String, Any] =
-    endpoint.get
-      .in("brands")
-      .out(stringBody)
+) extends Http4sDsl[F]:
+  private[routes] val prefixPath = "/brands"
 
-  private val getBrands: HttpRoutes[F]                                   =
-    Http4sServerInterpreter[F]().toRoutes(
-      getBrandsEndpoint.serverLogicSuccess { _ =>
-        Monad[F].pure("Hello World !")
-      }
-    )
+  private val httpRoutes: HttpRoutes[F] = HttpRoutes.of[F] { case GET -> Root =>
+    Ok(brands.findAll)
+  }
 
-  val routes: HttpRoutes[F] = getBrands
+  val routes: HttpRoutes[F] = Router(
+    prefixPath -> httpRoutes
+  )
