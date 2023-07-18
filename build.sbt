@@ -11,10 +11,10 @@ lazy val root = (project in file("."))
   .settings(
     libraryDependencies ++=
       Dependencies.cats ++
+        Dependencies.circe ++
         Dependencies.ciris ++
         Dependencies.fs2 ++
         Dependencies.http4s ++
         Dependencies.refined ++
-        Dependencies.skunk ++
-        Dependencies.tapir
+        Dependencies.skunk
   )

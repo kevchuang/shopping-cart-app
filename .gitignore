@@ -2,7 +2,9 @@
 .bleep
 .idea
 
+project/.bloop
 project/project
+project/metals.sbt
 project/target
 
 target
