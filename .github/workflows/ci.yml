@@ -27,7 +27,7 @@ jobs:
         uses: cachix/install-nix-action@v13
 
       - name: "Run with ${{ matrix.java }} 🚀"
-        run: nix-shell --argstr jdk "${{ matrix.java }}" --run "sbt 'scalafmtCheckAll;test;it:test'"
+        run: nix-shell --argstr jdk "${{ matrix.java }}" --run "sbt 'check;test;it:test'"
 
       - name: "Shutting down Postgres & Redis 🐳"
         run: docker-compose down
