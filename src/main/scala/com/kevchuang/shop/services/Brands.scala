@@ -28,6 +28,7 @@ object Brands:
           _               <- preparedCommand.execute(Brand(brandId, name))
         yield brandId
       }
+end Brands
 
 private object BrandsSQL:
   private val brandCodec: Codec[Brand] = (brandId ~ brandName).imap {

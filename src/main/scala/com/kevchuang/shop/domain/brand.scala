@@ -1,5 +1,7 @@
 package com.kevchuang.shop.domain
 
+import cats.Show
+import cats.derived.*
 import io.circe.*
 
 import java.util.UUID
@@ -26,6 +28,6 @@ object brand:
     given Encoder[BrandName] = Encoder.encodeString
   end BrandName
 
-  final case class Brand(uuid: BrandId, name: BrandName)
+  final case class Brand(uuid: BrandId, name: BrandName) derives Show
 
 end brand
