@@ -21,12 +21,13 @@ object BuildHelper {
   )
 
   def standardSettings
-  : List[Setting[? >: String & Task[Seq[String]] & Boolean]] = List(
+  : List[Setting[? >: String & Task[Seq[String]] & Boolean & Seq[TestFramework]]] = List(
     ThisBuild / scalaVersion := scala3,
     scalacOptions := ScalaSettings.baseSettings,
     scalafmtOnCompile := true,
     Test / parallelExecution := true,
     ThisBuild / fork := true,
-    run / fork := true
+    run / fork := true,
+    testFrameworks += new TestFramework("weaver.framework.CatsEffect")
   )
 }

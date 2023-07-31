@@ -2,6 +2,8 @@
 .bleep
 .bloop
 .idea
+.metals
+.vscode
 
 project/.bloop
 project/project

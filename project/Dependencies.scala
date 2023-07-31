@@ -7,10 +7,11 @@ object Dependencies {
   private val cirisVersion = "3.2.0"
   private val fs2Version = "3.7.0"
   private val http4sVersion = "0.23.20"
+  private val kittenVersion = "3.0.0"
   private val monocleVersion = "3.2.0"
   private val skunkVersion = "0.6.0-RC2"
   private val refinedVersion = "0.11.0"
-  private val tapirVersion = "1.5.4"
+  private val weaverVersion = "0.8.3"
 
   val cats: List[ModuleID] = List(
     "org.typelevel" %% "cats-core" % catsCoreVersion,
@@ -38,6 +39,10 @@ object Dependencies {
     "org.http4s" %% "http4s-ember-server" % http4sVersion
   )
 
+  val kittens: List[ModuleID] = List(
+    "org.typelevel" %% "kittens" % kittenVersion
+  )
+
   val refined: List[ModuleID] = List(
     "eu.timepit" %% "refined-cats" % refinedVersion,
     "eu.timepit" %% "refined" % refinedVersion
@@ -45,5 +50,10 @@ object Dependencies {
 
   val skunk: List[ModuleID] = List(
     "org.tpolecat" %% "skunk-core" % skunkVersion
+  )
+
+  val weaver: List[ModuleID] = List(
+    "com.disneystreaming" %% "weaver-cats" % weaverVersion % Test,
+    "com.disneystreaming" %% "weaver-scalacheck" % weaverVersion % Test
   )
 }

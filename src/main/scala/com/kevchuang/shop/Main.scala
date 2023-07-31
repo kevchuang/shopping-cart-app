@@ -16,17 +16,17 @@ object Main extends IOApp:
     for
       config <- AppConfig.load[IO]
       _      <- Logger[IO].info("Application configuration loaded")
-      _      <- Supervisor[IO].use { implicit sp =>
-                  AppResources
-                    .make[IO](config)
-                    .evalMap { resources =>
-                      val services = Services.make[IO](resources.postgres)
-                      val api      = HttpApi.make[IO](services)
-                      IO.pure(config.httpServerConfig -> api.httpApp)
-                    }
-                    .flatMap { case (serverConfig, serverApp) =>
-                      HttpServer.start[IO](serverConfig, serverApp)
-                    }
-                    .useForever
-                }
+      _ <- Supervisor[IO].use { implicit sp =>
+             AppResources
+               .make[IO](config)
+               .evalMap { resources =>
+                 val services = Services.make[IO](resources.postgres)
+                 val api      = HttpApi.make[IO](services)
+                 IO.pure(config.httpServerConfig -> api.httpApp)
+               }
+               .flatMap { case (serverConfig, serverApp) =>
+                 HttpServer.start[IO](serverConfig, serverApp)
+               }
+               .useForever
+           }
     yield ExitCode.Success
