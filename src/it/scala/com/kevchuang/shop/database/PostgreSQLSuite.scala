@@ -2,6 +2,7 @@ package com.kevchuang.shop.database
 
 import cats.effect.*
 import cats.implicits.*
+import com.kevchuang.shop.domain.brand.BrandId
 import com.kevchuang.shop.services.Brands
 import com.kevchuang.shop.suite.ResourceSuite
 import com.kevchuang.shop.utils.Generators.brandGen
@@ -43,3 +44,32 @@ object PostgreSQLSuite extends ResourceSuite:
       )
     }
   }
+
+//  test("Items") { postgres =>
+//    forall(itemGen) { item =>
+//      def newItem(
+//                   bid: Option[BrandId],
+//                   cid: Option[CategoryId]
+//                 ) = CreateItem(
+//        name = item.name,
+//        description = item.description,
+//        price = item.price,
+//        brandId = bid.getOrElse(item.brand.uuid),
+//        categoryId = cid.getOrElse(item.category.uuid)
+//      )
+//
+//      val b = Brands.make[IO](postgres)
+//      val c = Categories.make[IO](postgres)
+//      val i = Items.make[IO](postgres)
+//
+//      for {
+//        x <- i.findAll
+//        _ <- b.create(item.brand.name)
+//        d <- b.findAll.map(_.headOption.map(_.uuid))
+//        _ <- c.create(item.category.name)
+//        e <- c.findAll.map(_.headOption.map(_.uuid))
+//        _ <- i.create(newItem(d, e))
+//        y <- i.findAll
+//      } yield expect.all(x.isEmpty, y.count(_.name === item.name) === 1)
+//    }
+//  }
