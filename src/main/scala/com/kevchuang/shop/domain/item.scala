@@ -49,7 +49,8 @@ object item:
       price: Price,
       brand: Brand,
       category: Category
-  ) derives Eq, Show
+  ) derives Eq,
+        Show
 
   final case class CreateItem(
       name: ItemName,

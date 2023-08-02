@@ -73,4 +73,3 @@ object PostgreSQLSuite extends ResourceSuite:
 //      } yield expect.all(x.isEmpty, y.count(_.name === item.name) === 1)
 //    }
 //  }
-

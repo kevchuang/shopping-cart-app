@@ -23,6 +23,6 @@ object price:
   given Decoder[Price] = Decoder[Double].map(USD.apply)
   given Encoder[Price] = Encoder[Double].contramap(_.amount)
 
-  given Eq[Price] = Eq.and(Eq.by(_.amount), Eq.by(_.currency))
+  given Eq[Price]   = Eq.and(Eq.by(_.amount), Eq.by(_.currency))
   given Show[Price] = Show.fromToString
 end price

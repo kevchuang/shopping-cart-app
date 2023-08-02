@@ -1,7 +1,7 @@
 package com.kevchuang.shop.domain
 
-import cats.{Eq, Show}
 import cats.derived.*
+import cats.{Eq, Show}
 import io.circe.{Decoder, Encoder}
 
 import java.util.UUID
@@ -27,5 +27,7 @@ object category:
     given Encoder[CategoryName] = Encoder.encodeString
   end CategoryName
 
-  final case class Category(uuid: CategoryId, name: CategoryName) derives Eq, Show
+  final case class Category(uuid: CategoryId, name: CategoryName)
+      derives Eq,
+        Show
 end category
