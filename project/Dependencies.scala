@@ -10,6 +10,7 @@ object Dependencies {
   private val kittenVersion = "3.0.0"
   private val monocleVersion = "3.2.0"
   private val skunkVersion = "0.6.0-RC2"
+  private val squantsVersion = "1.8.3"
   private val refinedVersion = "0.11.0"
   private val weaverVersion = "0.8.3"
 

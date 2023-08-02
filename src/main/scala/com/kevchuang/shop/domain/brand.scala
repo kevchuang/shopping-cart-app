@@ -1,8 +1,11 @@
 package com.kevchuang.shop.domain
 
-import cats.Show
+import cats.{Eq, Show}
 import cats.derived.*
+import eu.timepit.refined.auto.*
+import eu.timepit.refined.types.string.NonEmptyString
 import io.circe.*
+import org.http4s.{ParseFailure, QueryParamDecoder}
 
 import java.util.UUID
 
@@ -28,6 +31,24 @@ object brand:
     given Encoder[BrandName] = Encoder.encodeString
   end BrandName
 
-  final case class Brand(uuid: BrandId, name: BrandName) derives Show
+  opaque type BrandParam = NonEmptyString
+  object BrandParam:
+    def apply(s: NonEmptyString): BrandParam = s
+
+    extension (brandParam: BrandParam)
+      def toDomain: BrandName = BrandName(brandParam.toLowerCase.capitalize)
+
+    given QueryParamDecoder[BrandParam] =
+      QueryParamDecoder.stringQueryParamDecoder.emap(s =>
+        NonEmptyString
+          .from(s)
+          .fold(
+            e => Left(ParseFailure("brand decoder failure", e)),
+            value => Right(BrandParam(value))
+          )
+      )
+  end BrandParam
+
+  final case class Brand(uuid: BrandId, name: BrandName) derives Eq, Show
 
 end brand
