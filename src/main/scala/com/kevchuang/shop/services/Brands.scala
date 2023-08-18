@@ -8,6 +8,7 @@ import com.kevchuang.shop.domain.brand.*
 import com.kevchuang.shop.sql.codecs.*
 import skunk.*
 import skunk.implicits.*
+import io.github.iltotore.iron.*
 
 trait Brands[F[_]]:
   def findAll: F[List[Brand]]

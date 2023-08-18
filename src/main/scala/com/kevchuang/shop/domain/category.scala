@@ -2,30 +2,19 @@ package com.kevchuang.shop.domain
 
 import cats.derived.*
 import cats.{Eq, Show}
-import io.circe.{Decoder, Encoder}
+import com.kevchuang.shop.domain.types.common.NotEmpty
+import io.github.iltotore.iron.*
+import io.github.iltotore.iron.cats.given
+import io.github.iltotore.iron.constraint.all.*
 
 import java.util.UUID
 
 object category:
-  opaque type CategoryId = UUID
-  object CategoryId:
-    def apply(uuid: UUID): CategoryId = uuid
+  opaque type CategoryId = UUID :| Pure
+  object CategoryId extends RefinedTypeOpsImpl[UUID, Pure, CategoryId]
 
-    extension (categoryId: CategoryId) def value: UUID = categoryId
-
-    given Decoder[CategoryId] = Decoder.decodeUUID.map(CategoryId.apply)
-    given Encoder[CategoryId] = Encoder.encodeUUID
-  end CategoryId
-
-  opaque type CategoryName = String
-  object CategoryName:
-    def apply(name: String): CategoryName = name
-
-    extension (categoryName: CategoryName) def value: String = categoryName
-
-    given Decoder[CategoryName] = Decoder.decodeString.map(CategoryName.apply)
-    given Encoder[CategoryName] = Encoder.encodeString
-  end CategoryName
+  opaque type CategoryName = String :| NotEmpty
+  object CategoryName extends RefinedTypeOpsImpl[String, NotEmpty, CategoryName]
 
   final case class Category(uuid: CategoryId, name: CategoryName)
       derives Eq,

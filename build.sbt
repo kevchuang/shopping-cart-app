@@ -15,8 +15,8 @@ lazy val root = (project in file("."))
         Dependencies.ciris ++
         Dependencies.fs2 ++
         Dependencies.http4s ++
+        Dependencies.iron ++
         Dependencies.kittens ++
-        Dependencies.refined ++
         Dependencies.skunk ++
         Dependencies.weaver
   )

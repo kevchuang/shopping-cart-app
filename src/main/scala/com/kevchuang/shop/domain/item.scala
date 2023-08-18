@@ -5,42 +5,23 @@ import cats.derived.*
 import com.kevchuang.shop.domain.brand.{Brand, BrandId}
 import com.kevchuang.shop.domain.category.{Category, CategoryId}
 import com.kevchuang.shop.domain.price.Price
-import io.circe.*
+import com.kevchuang.shop.domain.types.common.NotEmpty
+import io.github.iltotore.iron.*
+import io.github.iltotore.iron.cats.given
+import io.github.iltotore.iron.constraint.all.*
 
 import java.util.UUID
 
 object item:
-  opaque type ItemId = UUID
-  object ItemId:
-    def apply(uuid: UUID): ItemId = uuid
+  opaque type ItemId = UUID :| Pure
+  object ItemId extends RefinedTypeOpsImpl[UUID, Pure, ItemId]
 
-    extension (itemId: ItemId) def value: UUID = itemId
+  opaque type ItemName = String :| NotEmpty
+  object ItemName extends RefinedTypeOpsImpl[String, NotEmpty, ItemName]
 
-    given Decoder[ItemId] = Decoder.decodeUUID.map(ItemId(_))
-    given Encoder[ItemId] = Encoder.encodeUUID
-  end ItemId
-
-  opaque type ItemName = String
-  object ItemName:
-    def apply(name: String): ItemName = name
-
-    extension (itemName: ItemName) def value: String = itemName
-
-    given Decoder[ItemName] = Decoder.decodeString.map(ItemName(_))
-    given Encoder[ItemName] = Encoder.encodeString
-  end ItemName
-
-  opaque type ItemDescription = String
-  object ItemDescription:
-    def apply(description: String): ItemDescription = description
-
-    extension (itemDescription: ItemDescription)
-      def value: String = itemDescription
-
-    given Decoder[ItemDescription] =
-      Decoder.decodeString.map(ItemDescription(_))
-    given Encoder[ItemDescription] = Encoder.encodeString
-  end ItemDescription
+  opaque type ItemDescription = String :| Pure
+  object ItemDescription
+      extends RefinedTypeOpsImpl[String, Pure, ItemDescription]
 
   final case class Item(
       uuid: ItemId,

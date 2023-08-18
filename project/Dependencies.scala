@@ -7,11 +7,10 @@ object Dependencies {
   private val cirisVersion = "3.2.0"
   private val fs2Version = "3.7.0"
   private val http4sVersion = "0.23.20"
+  private val ironVersion = "2.2.0"
   private val kittenVersion = "3.0.0"
   private val monocleVersion = "3.2.0"
   private val skunkVersion = "0.6.0-RC2"
-  private val squantsVersion = "1.8.3"
-  private val refinedVersion = "0.11.0"
   private val weaverVersion = "0.8.3"
 
   val cats: List[ModuleID] = List(
@@ -40,13 +39,14 @@ object Dependencies {
     "org.http4s" %% "http4s-ember-server" % http4sVersion
   )
 
-  val kittens: List[ModuleID] = List(
-    "org.typelevel" %% "kittens" % kittenVersion
+  val iron: List[ModuleID] = List(
+    "io.github.iltotore" %% "iron" % ironVersion,
+    "io.github.iltotore" %% "iron-cats" % ironVersion,
+    "io.github.iltotore" %% "iron-circe" % ironVersion,
   )
 
-  val refined: List[ModuleID] = List(
-    "eu.timepit" %% "refined-cats" % refinedVersion,
-    "eu.timepit" %% "refined" % refinedVersion
+  val kittens: List[ModuleID] = List(
+    "org.typelevel" %% "kittens" % kittenVersion
   )
 
   val skunk: List[ModuleID] = List(

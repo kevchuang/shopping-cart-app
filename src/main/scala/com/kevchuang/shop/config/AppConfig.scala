@@ -2,12 +2,12 @@ package com.kevchuang.shop.config
 
 import cats.effect.kernel.Async
 import ciris.*
-import ciris.refined.*
 import com.comcast.ip4s.*
 import com.kevchuang.shop.config.PostgreSQLConfig.*
-import eu.timepit.refined.*
-import eu.timepit.refined.cats.*
-import eu.timepit.refined.types.string.NonEmptyString
+import io.github.iltotore.iron.*
+import io.github.iltotore.iron.constraint.all.*
+import io.github.iltotore.iron.cats.given
+import com.kevchuang.shop.macros.ciris.given
 
 final case class AppConfig(
     httpServerConfig: HttpServerConfig,
@@ -19,7 +19,7 @@ object AppConfig:
 
   private def default[F[_]]: ConfigValue[F, AppConfig] =
     (
-      env("SC_POSTGRES_PASSWORD").as[NonEmptyString].secret
+      env("SC_POSTGRES_PASSWORD").as[Password].secret
     ).map { (postgrePassword) =>
       AppConfig(
         HttpServerConfig(
