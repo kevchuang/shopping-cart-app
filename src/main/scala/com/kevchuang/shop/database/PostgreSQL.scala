@@ -5,7 +5,6 @@ import cats.effect.kernel.*
 import cats.effect.std.Console
 import cats.syntax.all.*
 import com.kevchuang.shop.config.PostgreSQLConfig
-import eu.timepit.refined.auto.*
 import fs2.io.net.Network
 import org.typelevel.log4cats.Logger
 import skunk.*

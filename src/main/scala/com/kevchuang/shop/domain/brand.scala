@@ -1,54 +1,40 @@
 package com.kevchuang.shop.domain
 
-import cats.{Eq, Show}
 import cats.derived.*
-import eu.timepit.refined.auto.*
-import eu.timepit.refined.types.string.NonEmptyString
-import io.circe.*
+import cats.{Eq, Show}
+import com.kevchuang.shop.domain.types.common.*
+import io.github.iltotore.iron.*
+import io.github.iltotore.iron.cats.given
+import io.github.iltotore.iron.constraint.all.*
 import org.http4s.{ParseFailure, QueryParamDecoder}
 
 import java.util.UUID
 
 object brand:
+  opaque type BrandId = UUID :| Pure
+  object BrandId extends RefinedTypeOpsImpl[UUID, Pure, BrandId]
 
-  opaque type BrandId = UUID
-  object BrandId:
-    def apply(uuid: UUID): BrandId = uuid
+  opaque type BrandName = String :| Head[UpperCase]
+  object BrandName
+      extends RefinedTypeOpsImpl[String, Head[UpperCase], BrandName]
 
-    extension (brandId: BrandId) def value: UUID = brandId
-
-    given Decoder[BrandId] = Decoder.decodeUUID.map(BrandId(_))
-    given Encoder[BrandId] = Encoder.encodeUUID
-  end BrandId
-
-  opaque type BrandName = String
-  object BrandName:
-    def apply(s: String): BrandName = s.toLowerCase.capitalize
-
-    extension (brandName: BrandName) def value: String = brandName
-
-    given Decoder[BrandName] = Decoder.decodeString.map(BrandName(_))
-    given Encoder[BrandName] = Encoder.encodeString
-  end BrandName
-
-  opaque type BrandParam = NonEmptyString
-  object BrandParam:
-    def apply(s: NonEmptyString): BrandParam = s
-
+  opaque type BrandParam = String :| NotEmpty
+  object BrandParam extends RefinedTypeOpsImpl[String, NotEmpty, BrandParam]:
     extension (brandParam: BrandParam)
-      def toDomain: BrandName = BrandName(brandParam.toLowerCase.capitalize)
+      def toDomain: BrandName =
+        BrandName(
+          brandParam.toLowerCase.capitalize.refine[Head[UpperCase]]
+        )
 
     given QueryParamDecoder[BrandParam] =
       QueryParamDecoder.stringQueryParamDecoder.emap(s =>
-        NonEmptyString
-          .from(s)
+        s.refineEither[NotEmpty]
           .fold(
-            e => Left(ParseFailure("brand decoder failure", e)),
+            e => Left(ParseFailure("BrandParam decoder failure", e)),
             value => Right(BrandParam(value))
           )
       )
   end BrandParam
 
   final case class Brand(uuid: BrandId, name: BrandName) derives Eq, Show
-
 end brand

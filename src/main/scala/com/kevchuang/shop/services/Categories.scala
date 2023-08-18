@@ -7,6 +7,7 @@ import com.kevchuang.shop.domain.category.*
 import com.kevchuang.shop.sql.codecs.*
 import skunk.*
 import skunk.implicits.*
+import io.github.iltotore.iron.*
 
 trait Categories[F[_]]:
   def findAll: F[List[Category]]

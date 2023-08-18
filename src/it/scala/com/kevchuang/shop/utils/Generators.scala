@@ -5,48 +5,53 @@ import com.kevchuang.shop.domain.category.*
 import com.kevchuang.shop.domain.currency.USD
 import com.kevchuang.shop.domain.item.*
 import com.kevchuang.shop.domain.price.{Amount, Price}
+import com.kevchuang.shop.domain.types.common.NotEmpty
+import io.github.iltotore.iron.*
+import io.github.iltotore.iron.constraint.all.*
 import org.scalacheck.Gen
 
 import java.util.UUID
 
 object Generators:
 
-  val nonEmptyStringGen: Gen[String] =
+  val nonEmptyStringGen: Gen[String :| (NotEmpty & Head[UpperCase])] =
     Gen
       .chooseNum(21, 40)
       .flatMap { n =>
-        Gen.buildableOfN[String, Char](n, Gen.alphaChar)
+        Gen
+          .buildableOfN[String, Char](n, Gen.alphaChar)
+          .map(_.refine[NotEmpty & Head[UpperCase]])
       }
 
-  def nesGen[A](f: String => A): Gen[A] =
+  def nesGen[A](f: String :| (NotEmpty & Head[UpperCase]) => A): Gen[A] =
     nonEmptyStringGen.map(f)
 
   def idGen[A](f: UUID => A): Gen[A] =
     Gen.uuid.map(f)
 
   val brandIdGen: Gen[BrandId] =
-    idGen(BrandId.apply)
+    idGen(BrandId(_))
 
   val brandNameGen: Gen[BrandName] =
-    nesGen(BrandName.apply)
+    nesGen(BrandName(_))
 
   val categoryIdGen: Gen[CategoryId] =
-    idGen(CategoryId.apply)
+    idGen(CategoryId(_))
 
   val categoryNameGen: Gen[CategoryName] =
-    nesGen(CategoryName.apply)
+    nesGen(CategoryName(_))
 
   val itemIdGen: Gen[ItemId] =
-    idGen(ItemId.apply)
+    idGen(ItemId(_))
 
   val itemNameGen: Gen[ItemName] =
-    nesGen(ItemName.apply)
+    nesGen(ItemName(_))
 
   val itemDescriptionGen: Gen[ItemDescription] =
-    nesGen(ItemDescription.apply)
+    nesGen(ItemDescription(_))
 
   val priceGen: Gen[Price] =
-    Gen.posNum[Long].map(n => USD(Amount(n.toDouble)))
+    Gen.posNum[Long].map(n => USD(Amount(n.toDouble.refine[Positive])))
 
   val brandGen: Gen[Brand] =
     for

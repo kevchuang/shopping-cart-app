@@ -4,6 +4,7 @@ import cats.effect.kernel.Async
 import com.kevchuang.shop.domain.brand.Brand
 import com.kevchuang.shop.services.Brands
 import io.circe.generic.auto.*
+import io.github.iltotore.iron.circe.given
 import org.http4s.HttpRoutes
 import org.http4s.circe.CirceEntityEncoder.*
 import org.http4s.dsl.Http4sDsl

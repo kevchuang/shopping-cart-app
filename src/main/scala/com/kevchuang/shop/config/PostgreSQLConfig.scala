@@ -2,30 +2,31 @@ package com.kevchuang.shop.config
 
 import ciris.Secret
 import com.kevchuang.shop.config.PostgreSQLConfig.*
-import eu.timepit.refined.types.string.NonEmptyString
+import io.github.iltotore.iron.*
+import io.github.iltotore.iron.constraint.all.*
 
 final case class PostgreSQLConfig(
     host: HostName,
     port: PortNumber,
     user: UserName,
-    password: Secret[NonEmptyString],
+    password: Secret[Password],
     database: DatabaseName,
     max: Int
 )
 
 object PostgreSQLConfig:
-  opaque type HostName <: String = String
-  object HostName:
-    def apply(s: String): HostName = s
+  type HostName = String :| Pure
+  object HostName extends RefinedTypeOps[HostName]
 
-  opaque type PortNumber <: Int = Int
-  object PortNumber:
-    def apply(p: Int): PortNumber = p
+  type PortNumber = Int :| Positive
+  object PortNumber extends RefinedTypeOps[PortNumber]
 
-  opaque type UserName <: String = String
-  object UserName:
-    def apply(s: String): UserName = s
+  type UserName = String :| Alphanumeric
+  object UserName extends RefinedTypeOps[UserName]
 
-  opaque type DatabaseName <: String = String
-  object DatabaseName:
-    def apply(s: String): DatabaseName = s
+  type Password = String :| MinLength[5]
+  object Password extends RefinedTypeOps[Password]
+
+  type DatabaseName = String :| Alphanumeric
+  object DatabaseName extends RefinedTypeOps[DatabaseName]
+end PostgreSQLConfig
