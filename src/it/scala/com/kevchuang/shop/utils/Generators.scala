@@ -20,7 +20,7 @@ object Generators:
       .flatMap { n =>
         Gen
           .buildableOfN[String, Char](n, Gen.alphaChar)
-          .map(_.refine[NotEmpty & Head[UpperCase]])
+          .map(_.capitalize.refine[NotEmpty & Head[UpperCase]])
       }
 
   def nesGen[A](f: String :| (NotEmpty & Head[UpperCase]) => A): Gen[A] =
