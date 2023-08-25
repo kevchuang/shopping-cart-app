@@ -1,5 +1,6 @@
 package com.kevchuang.shop.utils
 
+import com.kevchuang.shop.domain.auth.{EncryptedPassword, UserName}
 import com.kevchuang.shop.domain.brand.*
 import com.kevchuang.shop.domain.category.*
 import com.kevchuang.shop.domain.currency.USD
@@ -52,6 +53,12 @@ object Generators:
 
   val priceGen: Gen[Price] =
     Gen.posNum[Long].map(n => USD(Amount(n.toDouble.refine[Positive])))
+
+  val userNameGen: Gen[UserName] =
+    nesGen(UserName(_))
+
+  val encryptedPasswordGen: Gen[EncryptedPassword] =
+    nesGen(EncryptedPassword(_))
 
   val brandGen: Gen[Brand] =
     for

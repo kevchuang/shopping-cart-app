@@ -7,6 +7,7 @@ object Dependencies {
   private val cirisVersion = "3.2.0"
   private val fs2Version = "3.7.0"
   private val http4sVersion = "0.23.20"
+  private val http4sJwtVersion = "1.2.0"
   private val ironVersion = "2.2.0"
   private val kittenVersion = "3.0.0"
   private val monocleVersion = "3.2.0"
@@ -37,6 +38,10 @@ object Dependencies {
     "org.http4s" %% "http4s-circe" % http4sVersion,
     "org.http4s" %% "http4s-dsl" % http4sVersion,
     "org.http4s" %% "http4s-ember-server" % http4sVersion
+  )
+
+  val http4sJwtAuth: List[ModuleID] = List(
+    "dev.profunktor" %% "http4s-jwt-auth" % http4sJwtVersion
   )
 
   val iron: List[ModuleID] = List(

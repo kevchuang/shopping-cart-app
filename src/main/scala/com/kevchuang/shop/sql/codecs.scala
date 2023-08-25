@@ -1,5 +1,6 @@
 package com.kevchuang.shop.sql
 
+import com.kevchuang.shop.domain.auth.*
 import com.kevchuang.shop.domain.brand.*
 import com.kevchuang.shop.domain.category.*
 import com.kevchuang.shop.domain.currency.*
@@ -15,8 +16,7 @@ import java.util.UUID
 
 object codecs:
 
-  val brandId: Codec[BrandId] =
-    uuid.imap(BrandId(_))(_.value)
+  val brandId: Codec[BrandId] = uuid.imap(BrandId(_))(_.value)
   val brandName: Codec[BrandName] =
     varchar.eimap(_.refineEither[Head[UpperCase]].map(BrandName(_)))(_.value)
 
@@ -35,5 +35,10 @@ object codecs:
       .eimap(a => a.toDouble.refineEither[Positive].map(e => USD(Amount(e))))(
         _.amount.value
       )
+
+  val userId: Codec[UserId]     = uuid.imap(UserId(_))(_.value)
+  val userName: Codec[UserName] = varchar.eimap(UserName.either(_))(_.value)
+  val encryptedPassword: Codec[EncryptedPassword] =
+    varchar.eimap(EncryptedPassword.either(_))(_.value)
 
 end codecs
