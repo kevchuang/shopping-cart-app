@@ -5,7 +5,7 @@ import cats.implicits.*
 import com.kevchuang.shop.domain.brand.BrandId
 import com.kevchuang.shop.domain.category.CategoryId
 import com.kevchuang.shop.domain.item.CreateItem
-import com.kevchuang.shop.services.{Brands, Categories, Items}
+import com.kevchuang.shop.services.{Brands, Categories, Items, Users}
 import com.kevchuang.shop.suite.ResourceSuite
 import com.kevchuang.shop.utils.Generators.*
 import io.github.iltotore.iron.cats.given
@@ -16,9 +16,8 @@ import skunk.implicits.*
 object PostgreSQLSuite extends ResourceSuite:
   type Res = Resource[IO, Session[IO]]
 
-  val flushTables: List[Command[Void]] = List("brands").map { table =>
-    sql"DELETE FROM #$table".command
-  }
+  val flushTables: List[Command[Void]] = List("brands", "items", "users").map:
+    table => sql"DELETE FROM #$table".command
 
   override def sharedResource: Resource[IO, Resource[IO, Session[IO]]] =
     Session
@@ -74,5 +73,21 @@ object PostgreSQLSuite extends ResourceSuite:
         _ <- i.create(newItem(d, e))
         y <- i.findAll
       yield expect.all(x.isEmpty, y.count(_.name === item.name) === 1)
+    }
+  }
+
+  test("Users") { postgres =>
+    val gen = for
+      u <- userNameGen
+      p <- encryptedPasswordGen
+    yield u -> p
+
+    forall(gen) { case (userName, password) =>
+      val u = Users.make[IO](postgres)
+      for
+        d <- u.create(userName, password)
+        x <- u.find(userName)
+        z <- u.create(userName, password).attempt
+      yield expect.all(x.count(_.id === d) === 1, z.isLeft)
     }
   }
