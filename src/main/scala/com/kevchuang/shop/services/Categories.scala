@@ -25,13 +25,13 @@ object Categories:
       def findAll: F[List[Category]] =
         postgres.use(_.execute(selectCategories))
 
-      def create(name: CategoryName): F[CategoryId] = postgres.use { session =>
-        for
-          preparedCommand <- session.prepare(insertCategory)
-          categoryId      <- UUIDGen.randomUUID[F].map(CategoryId(_))
-          _               <- preparedCommand.execute(Category(categoryId, name))
-        yield categoryId
-      }
+      def create(name: CategoryName): F[CategoryId] =
+        postgres.use: session =>
+          for
+            preparedCommand <- session.prepare(insertCategory)
+            categoryId      <- UUIDGen.randomUUID[F].map(CategoryId(_))
+            _               <- preparedCommand.execute(Category(categoryId, name))
+          yield categoryId
 
 end Categories
 

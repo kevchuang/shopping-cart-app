@@ -17,9 +17,10 @@ final case class ItemsRoutes[F[_]: Monad](items: Items[F]) extends Http4sDsl[F]:
   private object BrandQueryParam
       extends OptionalQueryParamDecoderMatcher[BrandParam]("brand")
 
-  private val httpRoutes: HttpRoutes[F] = HttpRoutes.of[F] {
-    case GET -> Root :? BrandQueryParam(brand) =>
-      Ok(brand.fold(items.findAll)(b => items.findByBrand(b.toDomain)))
-  }
+  private val httpRoutes: HttpRoutes[F] =
+    HttpRoutes.of[F]:
+      case GET -> Root :? BrandQueryParam(brand) =>
+        Ok(brand.fold(items.findAll)(b => items.findByBrand(b.toDomain)))
 
   val routes: HttpRoutes[F] = Router(prefixPath -> httpRoutes)
+end ItemsRoutes

@@ -19,11 +19,11 @@ object PostgreSQL:
     def checkPostgresConnection(
         postgres: Resource[F, Session[F]]
     ): F[Unit] =
-      postgres.use { session =>
-        session.unique(sql"select version();".query(text)).flatMap { v =>
-          Logger[F].info(s"Connected to Postgres $v")
-        }
-      }
+      postgres.use: session =>
+        session
+          .unique(sql"select version();".query(text))
+          .flatMap: v =>
+            Logger[F].info(s"Connected to Postgres $v")
 
     Session
       .pooled[F](
@@ -35,3 +35,4 @@ object PostgreSQL:
         max = config.max
       )
       .evalTap(checkPostgresConnection)
+end PostgreSQL
