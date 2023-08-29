@@ -15,10 +15,11 @@ final case class BrandsRoutes[F[_]: Async](
 ) extends Http4sDsl[F]:
   private[routes] val prefixPath = "/brands"
 
-  private val httpRoutes: HttpRoutes[F] = HttpRoutes.of[F] { case GET -> Root =>
-    Ok(brands.findAll)
-  }
+  private val httpRoutes: HttpRoutes[F] =
+    HttpRoutes.of[F]:
+      case GET -> Root => Ok(brands.findAll)
 
   val routes: HttpRoutes[F] = Router(
     prefixPath -> httpRoutes
   )
+end BrandsRoutes

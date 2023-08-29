@@ -22,13 +22,13 @@ object Brands:
     new Brands[F]:
       def findAll: F[List[Brand]] = postgres.use(_.execute(selectBrands))
 
-      def create(name: BrandName): F[BrandId] = postgres.use { session =>
-        for
-          preparedCommand <- session.prepare(insertBrand)
-          brandId         <- UUIDGen.randomUUID[F].map(BrandId(_))
-          _               <- preparedCommand.execute(Brand(brandId, name))
-        yield brandId
-      }
+      def create(name: BrandName): F[BrandId] =
+        postgres.use: session =>
+          for
+            preparedCommand <- session.prepare(insertBrand)
+            brandId         <- UUIDGen.randomUUID[F].map(BrandId(_))
+            _               <- preparedCommand.execute(Brand(brandId, name))
+          yield brandId
 end Brands
 
 private object BrandsSQL:

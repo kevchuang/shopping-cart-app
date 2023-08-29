@@ -14,10 +14,11 @@ final case class CategoriesRoutes[F[_]: Monad](
 ) extends Http4sDsl[F]:
   private[routes] val prefixPath = "/categories"
 
-  private val httpRoutes: HttpRoutes[F] = HttpRoutes.of[F] { case GET -> Root =>
-    Ok(categories.findAll)
-  }
+  private val httpRoutes: HttpRoutes[F] =
+    HttpRoutes.of[F]:
+      case GET -> Root => Ok(categories.findAll)
 
   val routes: HttpRoutes[F] = Router(
     prefixPath -> httpRoutes
   )
+end CategoriesRoutes

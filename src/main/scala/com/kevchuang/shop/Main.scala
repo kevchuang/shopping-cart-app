@@ -11,7 +11,7 @@ import org.typelevel.log4cats.slf4j.Slf4jLogger
 
 object Main extends IOApp:
   override def run(args: List[String]): IO[ExitCode] =
-    implicit val logger: Logger[IO] = Slf4jLogger.getLogger[IO]
+    given Logger[IO] = Slf4jLogger.getLogger[IO]
 
     for
       config <- AppConfig.load[IO]
@@ -29,3 +29,4 @@ object Main extends IOApp:
                .useForever
            }
     yield ExitCode.Success
+end Main

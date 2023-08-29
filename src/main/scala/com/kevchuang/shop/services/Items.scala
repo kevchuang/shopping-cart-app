@@ -26,13 +26,13 @@ object Items:
     new Items[F]:
       import ItemsSQL.*
 
-      def create(item: CreateItem): F[ItemId] = postgres.use { session =>
-        for
-          preparedCommand <- session.prepare(insertItem)
-          itemId          <- UUIDGen.randomUUID[F].map(ItemId(_))
-          _               <- preparedCommand.execute(itemId, item)
-        yield itemId
-      }
+      def create(item: CreateItem): F[ItemId] =
+        postgres.use: session =>
+          for
+            preparedCommand <- session.prepare(insertItem)
+            itemId          <- UUIDGen.randomUUID[F].map(ItemId(_))
+            _               <- preparedCommand.execute(itemId, item)
+          yield itemId
 
       def findAll: F[List[Item]] =
         postgres.use(_.execute(selectItems))
@@ -45,9 +45,9 @@ end Items
 private object ItemsSQL:
   private val itemDecoder: Decoder[Item] =
     (itemId ~ itemName ~ itemDescription ~ price ~ brandId ~ brandName ~ categoryId ~ categoryName)
-      .map { case i ~ n ~ d ~ p ~ bi ~ bn ~ ci ~ cn =>
-        Item(i, n, d, p, Brand(bi, bn), Category(ci, cn))
-      }
+      .map:
+        case i ~ n ~ d ~ p ~ bi ~ bn ~ ci ~ cn =>
+          Item(i, n, d, p, Brand(bi, bn), Category(ci, cn))
 
   val selectItems: Query[Void, Item] =
     sql"""
