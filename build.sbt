@@ -18,6 +18,7 @@ lazy val root = (project in file("."))
         Dependencies.http4sJwtAuth ++
         Dependencies.iron ++
         Dependencies.kittens ++
+        Dependencies.redis4cats ++
         Dependencies.skunk ++
         Dependencies.weaver
   )
