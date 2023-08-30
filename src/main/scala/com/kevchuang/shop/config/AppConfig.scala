@@ -1,9 +1,10 @@
 package com.kevchuang.shop.config
 
-import cats.effect.kernel.Async
+import cats.effect.*
 import ciris.*
 import com.comcast.ip4s.*
 import com.kevchuang.shop.config.PostgreSQLConfig.*
+import com.kevchuang.shop.config.RedisConfig.RedisURI
 import io.github.iltotore.iron.*
 import io.github.iltotore.iron.constraint.all.*
 import io.github.iltotore.iron.cats.given
@@ -11,13 +12,17 @@ import com.kevchuang.shop.macros.ciris.given
 
 final case class AppConfig(
     httpServerConfig: HttpServerConfig,
-    postgreSQLConfig: PostgreSQLConfig
+    postgreSQLConfig: PostgreSQLConfig,
+    redisConfig: RedisConfig
 )
 
 object AppConfig:
-  def load[F[_]: Async]: F[AppConfig] = default[F].load[F]
+  def load[F[_]: Async]: F[AppConfig] =
+    default[F](RedisURI("redis://localhost")).load[F]
 
-  private def default[F[_]]: ConfigValue[F, AppConfig] =
+  private def default[F[_]](
+      redisURI: RedisURI
+  ): ConfigValue[F, AppConfig] =
     (
       env("SC_POSTGRES_PASSWORD").as[Password].secret
     ).map { (postgrePassword) =>
@@ -33,6 +38,9 @@ object AppConfig:
           password = postgrePassword,
           database = DatabaseName("store"),
           max = 10
+        ),
+        RedisConfig(
+          uri = redisURI
         )
       )
     }

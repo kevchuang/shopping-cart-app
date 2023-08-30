@@ -2,6 +2,7 @@ package com.kevchuang.shop
 
 import cats.effect.std.Supervisor
 import cats.effect.{ExitCode, IO, IOApp}
+import dev.profunktor.redis4cats.log4cats.*
 import com.kevchuang.shop.config.AppConfig
 import com.kevchuang.shop.http.server.HttpServer
 import com.kevchuang.shop.modules.*

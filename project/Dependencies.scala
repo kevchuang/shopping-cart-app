@@ -10,6 +10,7 @@ object Dependencies {
   private val http4sJwtVersion = "1.2.0"
   private val ironVersion = "2.2.0"
   private val kittenVersion = "3.0.0"
+  private val redis4CatsVersion = "1.4.3"
   private val monocleVersion = "3.2.0"
   private val skunkVersion = "0.6.0-RC2"
   private val weaverVersion = "0.8.3"
@@ -52,6 +53,11 @@ object Dependencies {
 
   val kittens: List[ModuleID] = List(
     "org.typelevel" %% "kittens" % kittenVersion
+  )
+
+  val redis4cats: List[ModuleID] = List(
+    "dev.profunktor" %% "redis4cats-effects" % redis4CatsVersion,
+    "dev.profunktor" %% "redis4cats-log4cats" % redis4CatsVersion
   )
 
   val skunk: List[ModuleID] = List(
