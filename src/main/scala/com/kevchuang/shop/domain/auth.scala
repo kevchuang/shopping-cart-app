@@ -1,10 +1,13 @@
 package com.kevchuang.shop.domain
 
 import com.kevchuang.shop.domain.types.common.NotEmpty
+import dev.profunktor.auth.jwt.JwtToken
+import io.circe.*
+import io.github.iltotore.iron.*
+import io.github.iltotore.iron.cats.*
 
 import java.util.UUID
-import io.github.iltotore.iron.*
-
+import javax.crypto.Cipher
 import scala.util.control.NoStackTrace
 
 object auth:
@@ -16,6 +19,12 @@ object auth:
 
   opaque type Password = String :| NotEmpty
   object Password extends RefinedTypeOpsImpl[String, NotEmpty, Password]
+
+  opaque type EncryptCipher = Cipher :| Pure
+  object EncryptCipher extends RefinedTypeOpsImpl[Cipher, Pure, EncryptCipher]
+
+  opaque type DecryptCipher = Cipher :| Pure
+  object DecryptCipher extends RefinedTypeOpsImpl[Cipher, Pure, DecryptCipher]
 
   opaque type EncryptedPassword = String :| NotEmpty
   object EncryptedPassword
@@ -46,4 +55,6 @@ object auth:
   final case class UserNotFound(userName: UserName)    extends NoStackTrace
   final case class UserNameInUse(userName: UserName)   extends NoStackTrace
   final case class InvalidPassword(userName: UserName) extends NoStackTrace
+
+  given Encoder[JwtToken] = Encoder.forProduct1("access_token")(_.value)
 end auth

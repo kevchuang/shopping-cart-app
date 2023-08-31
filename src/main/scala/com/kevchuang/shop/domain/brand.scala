@@ -27,7 +27,7 @@ object brand:
         )
 
     given QueryParamDecoder[BrandParam] =
-      QueryParamDecoder.stringQueryParamDecoder.emap(s =>
+      QueryParamDecoder[String].emap(s =>
         s.refineEither[NotEmpty]
           .fold(
             e => Left(ParseFailure("BrandParam decoder failure", e)),
