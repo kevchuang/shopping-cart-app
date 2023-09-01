@@ -3,8 +3,8 @@ package com.kevchuang.shop.domain
 import com.kevchuang.shop.domain.types.common.NotEmpty
 import dev.profunktor.auth.jwt.JwtToken
 import io.circe.*
+import cats.*
 import io.github.iltotore.iron.*
-import io.github.iltotore.iron.cats.*
 
 import java.util.UUID
 import javax.crypto.Cipher
@@ -57,4 +57,5 @@ object auth:
   final case class InvalidPassword(userName: UserName) extends NoStackTrace
 
   given Encoder[JwtToken] = Encoder.forProduct1("access_token")(_.value)
+  given Eq[JwtToken]      = Eq.by(_.value)
 end auth
