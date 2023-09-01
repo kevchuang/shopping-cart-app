@@ -24,4 +24,10 @@ object users:
       password: EncryptedPassword
   ) derives Eq,
         Show
+
+  opaque type AdminUser = User :| Pure
+  object AdminUser extends RefinedTypeOpsImpl[User, Pure, AdminUser]
+
+  opaque type CommonUser = User :| Pure
+  object CommonUser extends RefinedTypeOpsImpl[User, Pure, CommonUser]
 end users
