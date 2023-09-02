@@ -1,4 +1,4 @@
-package com.kevchuang.shop.http.entities
+package com.kevchuang.shop.http.codecs
 
 import cats.effect.*
 import com.kevchuang.shop.domain.auth.{*, given}
