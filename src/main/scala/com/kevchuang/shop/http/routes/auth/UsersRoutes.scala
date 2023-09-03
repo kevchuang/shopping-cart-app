@@ -4,7 +4,7 @@ import cats.MonadThrow
 import cats.effect.*
 import cats.syntax.all.*
 import com.kevchuang.shop.domain.auth.*
-import com.kevchuang.shop.http.entities.*
+import com.kevchuang.shop.http.codecs.*
 import com.kevchuang.shop.services.Auth
 import io.github.iltotore.iron.*
 import io.github.iltotore.iron.cats.given
