@@ -12,14 +12,14 @@ import java.util.UUID
 
 object brand:
   opaque type BrandId = UUID :| Pure
-  object BrandId extends RefinedTypeOpsImpl[UUID, Pure, BrandId]
+  object BrandId extends RefinedTypeOps[UUID, Pure, BrandId]
 
   opaque type BrandName = String :| Head[UpperCase]
   object BrandName
-      extends RefinedTypeOpsImpl[String, Head[UpperCase], BrandName]
+      extends RefinedTypeOps[String, Head[UpperCase], BrandName]
 
   opaque type BrandParam = String :| NotEmpty
-  object BrandParam extends RefinedTypeOpsImpl[String, NotEmpty, BrandParam]:
+  object BrandParam extends RefinedTypeOps[String, NotEmpty, BrandParam]:
     extension (brandParam: BrandParam)
       def toDomain: BrandName =
         BrandName(

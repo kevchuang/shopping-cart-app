@@ -12,33 +12,31 @@ import scala.util.control.NoStackTrace
 
 object auth:
   opaque type UserId = UUID :| Pure
-  object UserId extends RefinedTypeOpsImpl[UUID, Pure, UserId]
+  object UserId extends RefinedTypeOps[UUID, Pure, UserId]
 
   opaque type UserName = String :| NotEmpty
-  object UserName extends RefinedTypeOpsImpl[String, NotEmpty, UserName]
+  object UserName extends RefinedTypeOps[String, NotEmpty, UserName]
 
   opaque type Password = String :| NotEmpty
-  object Password extends RefinedTypeOpsImpl[String, NotEmpty, Password]
+  object Password extends RefinedTypeOps[String, NotEmpty, Password]
 
   opaque type EncryptCipher = Cipher :| Pure
-  object EncryptCipher extends RefinedTypeOpsImpl[Cipher, Pure, EncryptCipher]
+  object EncryptCipher extends RefinedTypeOps[Cipher, Pure, EncryptCipher]
 
   opaque type DecryptCipher = Cipher :| Pure
-  object DecryptCipher extends RefinedTypeOpsImpl[Cipher, Pure, DecryptCipher]
+  object DecryptCipher extends RefinedTypeOps[Cipher, Pure, DecryptCipher]
 
   opaque type EncryptedPassword = String :| NotEmpty
   object EncryptedPassword
-      extends RefinedTypeOpsImpl[String, NotEmpty, EncryptedPassword]
+      extends RefinedTypeOps[String, NotEmpty, EncryptedPassword]
 
   opaque type UserNameParam = String :| NotEmpty
-  object UserNameParam
-      extends RefinedTypeOpsImpl[String, NotEmpty, UserNameParam]:
+  object UserNameParam extends RefinedTypeOps[String, NotEmpty, UserNameParam]:
     extension (userNameParam: UserNameParam)
       def toDomain: UserName = UserName(userNameParam.value)
 
   opaque type PasswordParam = String :| NotEmpty
-  object PasswordParam
-      extends RefinedTypeOpsImpl[String, NotEmpty, PasswordParam]:
+  object PasswordParam extends RefinedTypeOps[String, NotEmpty, PasswordParam]:
     extension (passwordParam: PasswordParam)
       def toDomain: Password = Password(passwordParam.value)
 

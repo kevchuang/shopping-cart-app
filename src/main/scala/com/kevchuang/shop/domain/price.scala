@@ -9,7 +9,7 @@ import io.github.iltotore.iron.constraint.all.*
 
 object price:
   opaque type Amount = Double :| Positive
-  object Amount extends RefinedTypeOpsImpl[Double, Positive, Amount]
+  object Amount extends RefinedTypeOps[Double, Positive, Amount]
 
   abstract class Price:
     def amount: Amount

@@ -16,17 +16,17 @@ final case class PostgreSQLConfig(
 
 object PostgreSQLConfig:
   type HostName = String :| Pure
-  object HostName extends RefinedTypeOps[HostName]
+  object HostName extends RefinedTypeOps[String, Pure, HostName]
 
   type PortNumber = Int :| Positive
-  object PortNumber extends RefinedTypeOps[PortNumber]
+  object PortNumber extends RefinedTypeOps[Int, Positive, PortNumber]
 
   type UserName = String :| Alphanumeric
-  object UserName extends RefinedTypeOps[UserName]
+  object UserName extends RefinedTypeOps[String, Alphanumeric, UserName]
 
   type Password = String :| MinLength[5]
-  object Password extends RefinedTypeOps[Password]
+  object Password extends RefinedTypeOps[String, MinLength[5], Password]
 
   type DatabaseName = String :| Alphanumeric
-  object DatabaseName extends RefinedTypeOps[DatabaseName]
+  object DatabaseName extends RefinedTypeOps[String, Alphanumeric, DatabaseName]
 end PostgreSQLConfig

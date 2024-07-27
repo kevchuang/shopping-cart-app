@@ -8,5 +8,5 @@ final case class RedisConfig(uri: RedisURI)
 
 object RedisConfig:
   opaque type RedisURI = String :| NotEmpty
-  object RedisURI extends RefinedTypeOpsImpl[String, NotEmpty, RedisURI]
+  object RedisURI extends RefinedTypeOps[String, NotEmpty, RedisURI]
 end RedisConfig

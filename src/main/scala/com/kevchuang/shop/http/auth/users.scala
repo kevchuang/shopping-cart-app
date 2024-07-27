@@ -10,11 +10,11 @@ import io.github.iltotore.iron.cats.given
 object users:
   opaque type AdminJwtAuth = JwtSymmetricAuth :| Pure
   object AdminJwtAuth
-      extends RefinedTypeOpsImpl[JwtSymmetricAuth, Pure, AdminJwtAuth]
+      extends RefinedTypeOps[JwtSymmetricAuth, Pure, AdminJwtAuth]
 
   opaque type UserJwtAuth = JwtSymmetricAuth :| Pure
   object UserJwtAuth
-      extends RefinedTypeOpsImpl[JwtSymmetricAuth, Pure, UserJwtAuth]
+      extends RefinedTypeOps[JwtSymmetricAuth, Pure, UserJwtAuth]
 
   final case class User(id: UserId, name: UserName) derives Show
 
@@ -26,8 +26,8 @@ object users:
         Show
 
   opaque type AdminUser = User :| Pure
-  object AdminUser extends RefinedTypeOpsImpl[User, Pure, AdminUser]
+  object AdminUser extends RefinedTypeOps[User, Pure, AdminUser]
 
   opaque type CommonUser = User :| Pure
-  object CommonUser extends RefinedTypeOpsImpl[User, Pure, CommonUser]
+  object CommonUser extends RefinedTypeOps[User, Pure, CommonUser]
 end users

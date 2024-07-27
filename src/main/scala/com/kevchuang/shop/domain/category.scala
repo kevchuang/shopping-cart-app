@@ -11,10 +11,10 @@ import java.util.UUID
 
 object category:
   opaque type CategoryId = UUID :| Pure
-  object CategoryId extends RefinedTypeOpsImpl[UUID, Pure, CategoryId]
+  object CategoryId extends RefinedTypeOps[UUID, Pure, CategoryId]
 
   opaque type CategoryName = String :| NotEmpty
-  object CategoryName extends RefinedTypeOpsImpl[String, NotEmpty, CategoryName]
+  object CategoryName extends RefinedTypeOps[String, NotEmpty, CategoryName]
 
   final case class Category(uuid: CategoryId, name: CategoryName)
       derives Eq,

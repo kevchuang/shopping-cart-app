@@ -14,14 +14,14 @@ import java.util.UUID
 
 object item:
   opaque type ItemId = UUID :| Pure
-  object ItemId extends RefinedTypeOpsImpl[UUID, Pure, ItemId]
+  object ItemId extends RefinedTypeOps[UUID, Pure, ItemId]
 
   opaque type ItemName = String :| NotEmpty
-  object ItemName extends RefinedTypeOpsImpl[String, NotEmpty, ItemName]
+  object ItemName extends RefinedTypeOps[String, NotEmpty, ItemName]
 
   opaque type ItemDescription = String :| Pure
   object ItemDescription
-      extends RefinedTypeOpsImpl[String, Pure, ItemDescription]
+      extends RefinedTypeOps[String, Pure, ItemDescription]
 
   final case class Item(
       uuid: ItemId,

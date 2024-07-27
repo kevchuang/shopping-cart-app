@@ -8,7 +8,7 @@ object Dependencies {
   private val fs2Version = "3.7.0"
   private val http4sVersion = "0.23.20"
   private val http4sJwtVersion = "1.2.0"
-  private val ironVersion = "2.2.0"
+  private val ironVersion = "2.6.0"
   private val kittenVersion = "3.0.0"
   private val log4CatsVersion = "2.6.0"
   private val redis4CatsVersion = "1.4.3"
