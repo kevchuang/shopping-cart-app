@@ -8,7 +8,7 @@ import com.kevchuang.shop.config.RedisConfig.RedisURI
 import io.github.iltotore.iron.*
 import io.github.iltotore.iron.constraint.all.*
 import io.github.iltotore.iron.cats.given
-import com.kevchuang.shop.macros.ciris.given
+import io.github.iltotore.iron.ciris.given
 
 final case class AppConfig(
     httpServerConfig: HttpServerConfig,
@@ -25,7 +25,7 @@ object AppConfig:
   ): ConfigValue[F, AppConfig] =
     (
       env("SC_POSTGRES_PASSWORD").as[Password].secret
-    ).map { (postgrePassword) =>
+    ).map { (postgresPassword) =>
       AppConfig(
         HttpServerConfig(
           host = host"0.0.0.0",
@@ -35,7 +35,7 @@ object AppConfig:
           host = HostName("localhost"),
           port = PortNumber(5432),
           user = UserName("postgres"),
-          password = postgrePassword,
+          password = postgresPassword,
           database = DatabaseName("store"),
           max = 10
         ),

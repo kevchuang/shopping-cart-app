@@ -15,8 +15,7 @@ object brand:
   object BrandId extends RefinedTypeOps[UUID, Pure, BrandId]
 
   opaque type BrandName = String :| Head[UpperCase]
-  object BrandName
-      extends RefinedTypeOps[String, Head[UpperCase], BrandName]
+  object BrandName extends RefinedTypeOps[String, Head[UpperCase], BrandName]
 
   opaque type BrandParam = String :| NotEmpty
   object BrandParam extends RefinedTypeOps[String, NotEmpty, BrandParam]:

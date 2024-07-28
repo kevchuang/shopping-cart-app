@@ -13,8 +13,7 @@ object users:
       extends RefinedTypeOps[JwtSymmetricAuth, Pure, AdminJwtAuth]
 
   opaque type UserJwtAuth = JwtSymmetricAuth :| Pure
-  object UserJwtAuth
-      extends RefinedTypeOps[JwtSymmetricAuth, Pure, UserJwtAuth]
+  object UserJwtAuth extends RefinedTypeOps[JwtSymmetricAuth, Pure, UserJwtAuth]
 
   final case class User(id: UserId, name: UserName) derives Show
 

@@ -50,6 +50,7 @@ object Dependencies {
     "io.github.iltotore" %% "iron" % ironVersion,
     "io.github.iltotore" %% "iron-cats" % ironVersion,
     "io.github.iltotore" %% "iron-circe" % ironVersion,
+    "io.github.iltotore" %% "iron-ciris" % ironVersion
   )
 
   val kittens: List[ModuleID] = List(

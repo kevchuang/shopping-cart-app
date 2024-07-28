@@ -20,8 +20,7 @@ object item:
   object ItemName extends RefinedTypeOps[String, NotEmpty, ItemName]
 
   opaque type ItemDescription = String :| Pure
-  object ItemDescription
-      extends RefinedTypeOps[String, Pure, ItemDescription]
+  object ItemDescription extends RefinedTypeOps[String, Pure, ItemDescription]
 
   final case class Item(
       uuid: ItemId,
