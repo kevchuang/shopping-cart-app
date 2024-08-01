@@ -1,7 +1,7 @@
 import sbt.*
 
 object Dependencies {
-  private val catsCoreVersion = "2.9.0"
+  private val catsCoreVersion = "2.12.0"
   private val catsEffectVersion = "3.5.0"
   private val circeVersion = "0.14.5"
   private val cirisVersion = "3.2.0"
