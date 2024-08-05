@@ -5,7 +5,7 @@ object Dependencies {
   private val catsEffectVersion = "3.5.0"
   private val circeVersion = "0.14.9"
   private val cirisVersion = "3.2.0"
-  private val fs2Version = "3.7.0"
+  private val fs2Version = "3.10.2"
   private val http4sVersion = "0.23.20"
   private val http4sJwtVersion = "1.2.0"
   private val ironVersion = "2.6.0"
