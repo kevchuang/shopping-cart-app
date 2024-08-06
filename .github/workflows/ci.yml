@@ -21,7 +21,7 @@ jobs:
         uses: coursier/cache-action@v4.1
 
       - name: "Starting up Postgres & Redis 🐳"
-        run: docker-compose up -d
+        run: docker compose up -d
 
       - name: "Install Nix ❄️"
         uses: cachix/install-nix-action@v13
