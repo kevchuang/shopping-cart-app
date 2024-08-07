@@ -21,12 +21,20 @@ object Main extends IOApp:
              AppResources
                .make[IO](config)
                .evalMap: resources =>
-                 val services = Services.make[IO](
-                   resources.postgres,
-                   resources.redis
-                 )
-                 val api = HttpApi.make[IO](services)
-                 IO.pure(config.httpServerConfig -> api.httpApp)
+                 Security
+                   .make[IO](
+                     config,
+                     resources.postgres,
+                     resources.redis
+                   )
+                   .map { security =>
+                     val services = Services.make[IO](
+                       resources.postgres,
+                       resources.redis
+                     )
+                     val api = HttpApi.make[IO](security, services)
+                     config.httpServerConfig -> api.httpApp
+                   }
                .flatMap:
                  case (serverConfig, serverApp) =>
                    HttpServer.start[IO](serverConfig, serverApp)
