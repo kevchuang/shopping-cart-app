@@ -1,9 +1,9 @@
 package com.kevchuang.shop.domain
 
+import cats.*
 import com.kevchuang.shop.domain.types.common.NotEmpty
 import dev.profunktor.auth.jwt.JwtToken
 import io.circe.*
-import cats.*
 import io.github.iltotore.iron.*
 
 import java.util.UUID

@@ -22,11 +22,7 @@ object Main extends IOApp:
                .make[IO](config)
                .evalMap: resources =>
                  Security
-                   .make[IO](
-                     config,
-                     resources.postgres,
-                     resources.redis
-                   )
+                   .make[IO](config, resources.postgres, resources.redis)
                    .map { security =>
                      val services = Services.make[IO](
                        resources.postgres,
