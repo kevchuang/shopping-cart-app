@@ -71,7 +71,7 @@ object Dependencies {
   )
 
   val weaver: List[ModuleID] = List(
-    "com.disneystreaming" %% "weaver-cats" % weaverVersion % Test,
-    "com.disneystreaming" %% "weaver-scalacheck" % weaverVersion % Test
+    "com.disneystreaming" %% "weaver-cats" % weaverVersion,
+    "com.disneystreaming" %% "weaver-scalacheck" % weaverVersion
   )
 }

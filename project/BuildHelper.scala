@@ -16,6 +16,9 @@ object BuildHelper {
 
   def nameSettings: List[Setting[String]] = List(
     name := "shopping-cart-app",
+  )
+
+  def organizationSettings: List[Setting[String]] = List(
     organization := "com.kevchuang",
     organizationName := "kevchuang"
   )

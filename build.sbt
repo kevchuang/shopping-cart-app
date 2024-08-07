@@ -1,13 +1,27 @@
 import BuildHelper.*
 
 lazy val root = (project in file("."))
-  .enablePlugins(AshScriptPlugin)
-  .enablePlugins(DockerPlugin)
-  .settings(nameSettings)
-  .settings(standardSettings)
-  .settings(dockerSettings)
+  .settings(
+    name := "shopping-cart"
+  )
+  .aggregate(core, tests)
+
+lazy val tests = (project in file("modules/tests"))
   .configs(IntegrationTest.extend(Test))
   .settings(Defaults.itSettings)
+  .settings(standardSettings)
+  .settings(
+    name := "shopping-cart-test-suite"
+  )
+  .dependsOn(core)
+
+lazy val core = (project in file("modules/core"))
+  .enablePlugins(AshScriptPlugin)
+  .enablePlugins(DockerPlugin)
+  .settings(name := "shopping-cart-core")
+  .settings(organizationSettings)
+  .settings(standardSettings)
+  .settings(dockerSettings)
   .settings(
     libraryDependencies ++=
       Dependencies.cats ++
