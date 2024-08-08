@@ -10,7 +10,7 @@ services:
       - POSTGRES_DB=store
       - POSTGRES_PASSWORD=my-password
     volumes:
-      - ./src/main/resources/tables.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./modules/core/src/main/resources/tables.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s
