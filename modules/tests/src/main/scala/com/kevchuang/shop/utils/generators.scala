@@ -13,7 +13,7 @@ import org.scalacheck.Gen
 
 import java.util.UUID
 
-object Generators:
+object generators:
 
   val nonEmptyStringGen: Gen[String :| (NotEmpty & Head[UpperCase])] =
     Gen
@@ -85,4 +85,4 @@ object Generators:
       category    <- categoryGen
     yield Item(id, name, description, price, brand, category)
 
-end Generators
+end generators

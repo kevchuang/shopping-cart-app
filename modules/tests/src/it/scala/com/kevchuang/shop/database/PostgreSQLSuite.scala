@@ -7,7 +7,7 @@ import com.kevchuang.shop.domain.category.CategoryId
 import com.kevchuang.shop.domain.item.CreateItem
 import com.kevchuang.shop.services.{Brands, Categories, Items, Users}
 import com.kevchuang.shop.suite.ResourceSuite
-import com.kevchuang.shop.utils.Generators.*
+import com.kevchuang.shop.utils.generators.*
 import io.github.iltotore.iron.cats.given
 import natchez.Trace.Implicits.noop
 import skunk.*

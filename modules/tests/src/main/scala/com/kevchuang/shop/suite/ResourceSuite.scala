@@ -16,3 +16,4 @@ abstract class ResourceSuite extends IOSuite with Checkers:
 
     def afterAll(f: Res => IO[Unit]): Resource[IO, Res] =
       resource.flatTap(x => Resource.make(IO.unit)(_ => f(x)))
+end ResourceSuite

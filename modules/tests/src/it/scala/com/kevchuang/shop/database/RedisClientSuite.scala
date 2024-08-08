@@ -9,7 +9,7 @@ import com.kevchuang.shop.domain.auth.*
 import com.kevchuang.shop.http.auth.users.*
 import com.kevchuang.shop.services.{Auth, Users, UsersAuth}
 import com.kevchuang.shop.suite.ResourceSuite
-import com.kevchuang.shop.utils.Generators.*
+import com.kevchuang.shop.utils.generators.*
 import dev.profunktor.auth.jwt.*
 import dev.profunktor.redis4cats.effect.Log
 import dev.profunktor.redis4cats.effect.Log.NoOp
