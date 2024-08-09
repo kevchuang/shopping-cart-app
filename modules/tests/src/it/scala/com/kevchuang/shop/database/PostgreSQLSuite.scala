@@ -65,14 +65,20 @@ object PostgreSQLSuite extends ResourceSuite:
       val i = Items.make[IO](postgres)
 
       for
-        x <- i.findAll
-        _ <- b.create(item.brand.name)
-        d <- b.findAll.map(_.headOption.map(_.uuid))
-        _ <- c.create(item.category.name)
-        e <- c.findAll.map(_.headOption.map(_.uuid))
-        _ <- i.create(newItem(d, e))
-        y <- i.findAll
-      yield expect.all(x.isEmpty, y.count(_.name === item.name) === 1)
+        x        <- i.findAll
+        _        <- b.create(item.brand.name)
+        d        <- b.findAll.map(_.headOption.map(_.uuid))
+        _        <- c.create(item.category.name)
+        e        <- c.findAll.map(_.headOption.map(_.uuid))
+        _        <- i.create(newItem(d, e))
+        y        <- i.findAll
+        headItem <- IO.fromOption(y.headOption)(new Exception(""))
+        itemById <- i.findById(headItem.uuid)
+      yield expect.all(
+        x.isEmpty,
+        y.count(_.name === item.name) === 1,
+        itemById === Some(headItem)
+      )
     }
   }
 

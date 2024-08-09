@@ -16,6 +16,7 @@ trait Items[F[_]]:
   def create(item: CreateItem): F[ItemId]
   def findAll: F[List[Item]]
   def findByBrand(brand: BrandName): F[List[Item]]
+  def findById(itemId: ItemId): F[Option[Item]]
 end Items
 
 object Items:
@@ -40,6 +41,11 @@ object Items:
       def findByBrand(brand: BrandName): F[List[Item]] =
         postgres.use(_.execute(selectItemsByBrand)(brand))
 
+      def findById(itemId: ItemId): F[Option[Item]] =
+        postgres.use: session =>
+          session
+            .prepareR(selectItemById)
+            .use(_.option(itemId))
 end Items
 
 private object ItemsSQL:
@@ -65,6 +71,13 @@ private object ItemsSQL:
         INNER JOIN categories AS c ON i.category_id = c.uuid
         WHERE b.name LIKE $brandName
       """.query(itemDecoder)
+
+  val selectItemById: Query[ItemId, Item] =
+    sql"""
+        SELECT i.uuid, i.name, i.description, i.price, b.uuid, b.name, c.uuid, c.name
+        FROM items AS i
+        WHERE i.uuid = $itemId         
+       """.query(itemDecoder)
 
   val insertItem: Command[ItemId ~ CreateItem] =
     sql"""
