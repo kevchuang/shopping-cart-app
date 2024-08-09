@@ -76,6 +76,8 @@ private object ItemsSQL:
     sql"""
         SELECT i.uuid, i.name, i.description, i.price, b.uuid, b.name, c.uuid, c.name
         FROM items AS i
+        INNER JOIN brands AS b ON i.brand_id = b.uuid
+        INNER JOIN categories AS c ON i.category_id = c.uuid
         WHERE i.uuid = $itemId         
        """.query(itemDecoder)
 
