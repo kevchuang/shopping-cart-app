@@ -14,6 +14,7 @@ object Dependencies {
   private val redis4CatsVersion = "1.4.3"
   private val monocleVersion = "3.2.0"
   private val skunkVersion = "0.6.0-RC2"
+  private val squantsVersion = "1.8.3"
   private val weaverVersion = "0.8.3"
 
   val cats: List[ModuleID] = List(
@@ -69,6 +70,10 @@ object Dependencies {
 
   val skunk: List[ModuleID] = List(
     "org.tpolecat" %% "skunk-core" % skunkVersion
+  )
+
+  val squants: List[ModuleID] = List(
+    "org.typelevel" %% "squants" % squantsVersion
   )
 
   val weaver: List[ModuleID] = List(

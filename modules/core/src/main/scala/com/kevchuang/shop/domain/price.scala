@@ -8,8 +8,8 @@ import io.github.iltotore.iron.cats.given
 import io.github.iltotore.iron.constraint.all.*
 
 object price:
-  opaque type Amount = Double :| Positive
-  object Amount extends RefinedTypeOps[Double, Positive, Amount]
+  opaque type Amount = BigDecimal :| Positive
+  object Amount extends RefinedTypeOps[BigDecimal, Positive, Amount]
 
   abstract class Price:
     def amount: Amount
@@ -17,8 +17,8 @@ object price:
   end Price
 
   given Decoder[Price] =
-    Decoder[Double].emap(_.refineEither[Positive].map(USD.apply))
-  given Encoder[Price] = Encoder[Double].contramap(_.amount)
+    Decoder[BigDecimal].emap(_.refineEither[Positive].map(USD.apply))
+  given Encoder[Price] = Encoder[BigDecimal].contramap(_.amount)
 
   given Eq[Price]   = Eq.and(Eq.by(_.amount), Eq.by(_.currency))
   given Show[Price] = Show.fromToString

@@ -35,5 +35,6 @@ lazy val core = (project in file("modules/core"))
         Dependencies.log4cats ++
         Dependencies.redis4cats ++
         Dependencies.skunk ++
+        Dependencies.squants ++
         Dependencies.weaver
   )

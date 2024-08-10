@@ -2,14 +2,15 @@ package com.kevchuang.shop.http.routes
 
 import cats.Monad
 import com.kevchuang.shop.domain.brand.BrandParam
+import com.kevchuang.shop.domain.given
 import com.kevchuang.shop.services.Items
 import io.circe.*
 import io.circe.generic.auto.*
+import io.github.iltotore.iron.circe.given
 import org.http4s.HttpRoutes
 import org.http4s.circe.CirceEntityCodec.*
 import org.http4s.dsl.Http4sDsl
 import org.http4s.server.Router
-import io.github.iltotore.iron.circe.given
 
 final case class ItemsRoutes[F[_]: Monad](items: Items[F]) extends Http4sDsl[F]:
   private[routes] val prefixPath = "/items"

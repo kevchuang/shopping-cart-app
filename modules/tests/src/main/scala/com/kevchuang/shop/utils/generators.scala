@@ -3,13 +3,12 @@ package com.kevchuang.shop.utils
 import com.kevchuang.shop.domain.auth.*
 import com.kevchuang.shop.domain.brand.*
 import com.kevchuang.shop.domain.category.*
-import com.kevchuang.shop.domain.currency.USD
 import com.kevchuang.shop.domain.item.*
-import com.kevchuang.shop.domain.price.{Amount, Price}
 import com.kevchuang.shop.domain.types.common.NotEmpty
 import io.github.iltotore.iron.*
 import io.github.iltotore.iron.constraint.all.*
 import org.scalacheck.Gen
+import squants.market.{Money, USD}
 
 import java.util.UUID
 
@@ -51,8 +50,8 @@ object generators:
   val itemDescriptionGen: Gen[ItemDescription] =
     nesGen(ItemDescription(_))
 
-  val priceGen: Gen[Price] =
-    Gen.posNum[Long].map(n => USD(Amount(n.toDouble.refine[Positive])))
+  val priceGen: Gen[Money] =
+    Gen.posNum[BigDecimal].map(USD(_))
 
   val userNameGen: Gen[UserName] =
     nesGen(UserName(_))
@@ -84,5 +83,11 @@ object generators:
       brand       <- brandGen
       category    <- categoryGen
     yield Item(id, name, description, price, brand, category)
+
+  val userIdGen: Gen[UserId] =
+    idGen(UserId(_))
+
+  val quantityGen: Gen[Quantity] =
+    Gen.posNum[Int].map(n => Quantity(n.assume[Positive]))
 
 end generators

@@ -3,14 +3,13 @@ package com.kevchuang.shop.sql
 import com.kevchuang.shop.domain.auth.*
 import com.kevchuang.shop.domain.brand.*
 import com.kevchuang.shop.domain.category.*
-import com.kevchuang.shop.domain.currency.*
 import com.kevchuang.shop.domain.item.*
-import com.kevchuang.shop.domain.price.*
 import com.kevchuang.shop.domain.types.common.NotEmpty
 import io.github.iltotore.iron.*
 import io.github.iltotore.iron.constraint.all.*
 import skunk.*
 import skunk.codec.all.*
+import squants.market.*
 
 import java.util.UUID
 
@@ -30,11 +29,7 @@ object codecs:
   val itemName: Codec[ItemName] =
     varchar.eimap(_.refineEither[NotEmpty].map(ItemName(_)))(_.value)
 
-  val price: Codec[Price] =
-    numeric
-      .eimap(a => a.toDouble.refineEither[Positive].map(e => USD(Amount(e))))(
-        _.amount.value
-      )
+  val price: Codec[Money] = numeric.imap[Money](USD(_))(_.amount)
 
   val userId: Codec[UserId]     = uuid.imap(UserId(_))(_.value)
   val userName: Codec[UserName] = varchar.eimap(UserName.either(_))(_.value)
