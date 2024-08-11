@@ -33,7 +33,7 @@ object generators:
     idGen(BrandId(_))
 
   val brandNameGen: Gen[BrandName] =
-    nesGen(BrandName(_))
+    nesGen(s => BrandName(s.assume[Alphanumeric]))
 
   val categoryIdGen: Gen[CategoryId] =
     idGen(CategoryId(_))

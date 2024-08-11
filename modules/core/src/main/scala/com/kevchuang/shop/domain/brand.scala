@@ -14,15 +14,15 @@ object brand:
   opaque type BrandId = UUID :| Pure
   object BrandId extends RefinedTypeOps[UUID, Pure, BrandId]
 
-  opaque type BrandName = String :| Head[UpperCase]
-  object BrandName extends RefinedTypeOps[String, Head[UpperCase], BrandName]
+  opaque type BrandName = String :| Alphanumeric
+  object BrandName extends RefinedTypeOps[String, Alphanumeric, BrandName]
 
   opaque type BrandParam = String :| NotEmpty
   object BrandParam extends RefinedTypeOps[String, NotEmpty, BrandParam]:
     extension (brandParam: BrandParam)
       def toDomain: BrandName =
         BrandName(
-          brandParam.toLowerCase.capitalize.refine[Head[UpperCase]]
+          brandParam.toLowerCase.capitalize.refine[Alphanumeric]
         )
 
     given QueryParamDecoder[BrandParam] =

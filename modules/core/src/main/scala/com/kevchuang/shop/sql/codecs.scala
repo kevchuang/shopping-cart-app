@@ -17,7 +17,7 @@ object codecs:
 
   val brandId: Codec[BrandId] = uuid.imap(BrandId(_))(_.value)
   val brandName: Codec[BrandName] =
-    varchar.eimap(_.refineEither[Head[UpperCase]].map(BrandName(_)))(_.value)
+    varchar.eimap(_.refineEither[Alphanumeric].map(BrandName(_)))(_.value)
 
   val categoryId: Codec[CategoryId] = uuid.imap(CategoryId(_))(_.value)
   val categoryName: Codec[CategoryName] =
