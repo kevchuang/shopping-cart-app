@@ -26,7 +26,8 @@ object Main extends IOApp:
                    .map { security =>
                      val services = Services.make[IO](
                        resources.postgres,
-                       resources.redis
+                       resources.redis,
+                       config.cartExpiration
                      )
                      val api = HttpApi.make[IO](security, services)
                      config.httpServerConfig -> api.httpApp

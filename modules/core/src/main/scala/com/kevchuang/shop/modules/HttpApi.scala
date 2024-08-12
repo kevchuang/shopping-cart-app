@@ -8,6 +8,7 @@ import com.kevchuang.shop.http.routes.auth.{
   LogoutRoutes,
   UsersRoutes
 }
+import com.kevchuang.shop.http.routes.secured.CartRoutes
 import com.kevchuang.shop.http.routes.{
   BrandsRoutes,
   CategoriesRoutes,
@@ -33,6 +34,9 @@ abstract sealed class HttpApi[F[_]: Async] private (
   private val logout: LogoutRoutes[F] = LogoutRoutes[F](security.auth)
   private val users: UsersRoutes[F]   = UsersRoutes[F](security.auth)
 
+  // secured routes
+  private val cart: CartRoutes[F] = CartRoutes[F](services.cart)
+
   private val brands: BrandsRoutes[F] = BrandsRoutes[F](services.brands)
   private val categories: CategoriesRoutes[F] =
     CategoriesRoutes[F](services.categories)
@@ -41,6 +45,7 @@ abstract sealed class HttpApi[F[_]: Async] private (
 
   private val routes: HttpRoutes[F] =
     brands.routes <+>
+      cart.routes(userMiddleware) <+>
       categories.routes <+>
       health.routes <+>
       items.routes <+>

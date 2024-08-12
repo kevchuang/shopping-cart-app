@@ -2,9 +2,11 @@ package com.kevchuang.shop.utils
 
 import com.kevchuang.shop.domain.auth.*
 import com.kevchuang.shop.domain.brand.*
+import com.kevchuang.shop.domain.cart.*
 import com.kevchuang.shop.domain.category.*
 import com.kevchuang.shop.domain.item.*
 import com.kevchuang.shop.domain.types.common.NotEmpty
+import com.kevchuang.shop.http.auth.users.*
 import io.github.iltotore.iron.*
 import io.github.iltotore.iron.constraint.all.*
 import org.scalacheck.Gen
@@ -87,7 +89,37 @@ object generators:
   val userIdGen: Gen[UserId] =
     idGen(UserId(_))
 
+  val userGen: Gen[User] =
+    for
+      i <- userIdGen
+      n <- userNameGen
+    yield User(i, n)
+
+  val commonUserGen: Gen[CommonUser] =
+    userGen.map(CommonUser(_))
+
   val quantityGen: Gen[Quantity] =
     Gen.posNum[Int].map(n => Quantity(n.assume[Positive]))
+
+  val itemMapGen: Gen[(ItemId, Quantity)] =
+    for
+      i <- itemIdGen
+      q <- quantityGen
+    yield i -> q
+
+  val cartGen: Gen[Cart] =
+    Gen.nonEmptyMap(itemMapGen).map(Cart.apply)
+
+  val cartItemGen: Gen[CartItem] =
+    for
+      i <- itemGen
+      q <- quantityGen
+    yield CartItem(i, q)
+
+  val cartTotalGen: Gen[CartTotal] =
+    for
+      c <- Gen.nonEmptyListOf(cartItemGen)
+      t <- priceGen
+    yield CartTotal(c, t)
 
 end generators

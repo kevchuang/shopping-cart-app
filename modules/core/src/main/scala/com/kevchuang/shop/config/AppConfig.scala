@@ -7,10 +7,12 @@ import com.comcast.ip4s.*
 import com.kevchuang.shop.config.PostgreSQLConfig.*
 import com.kevchuang.shop.config.RedisConfig.RedisURI
 import com.kevchuang.shop.config.types.*
+import com.kevchuang.shop.domain.cart.ShoppingCartExpiration
 import io.github.iltotore.iron.*
 import io.github.iltotore.iron.constraint.all.*
 import io.github.iltotore.iron.cats.given
 import io.github.iltotore.iron.ciris.given
+
 import scala.concurrent.duration.*
 
 final case class AppConfig(
@@ -18,6 +20,7 @@ final case class AppConfig(
     tokenConfig: Secret[JwtAccessTokenKeyConfig],
     passwordSalt: Secret[PasswordSalt],
     tokenExpiration: TokenExpiration,
+    cartExpiration: ShoppingCartExpiration,
     postgreSQLConfig: PostgreSQLConfig,
     redisConfig: RedisConfig
 )
@@ -42,6 +45,7 @@ object AppConfig:
         accessToken,
         passwordSalt,
         TokenExpiration(30.minutes),
+        ShoppingCartExpiration(30.minutes),
         PostgreSQLConfig(
           host = HostName("localhost"),
           port = PortNumber(5432),

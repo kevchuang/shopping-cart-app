@@ -1,6 +1,6 @@
 package com.kevchuang.shop.services
 
-import cats.effect.Sync
+import cats.*
 import cats.syntax.all.*
 import com.kevchuang.shop.domain.auth.UserId
 import com.kevchuang.shop.domain.cart.*
@@ -26,7 +26,7 @@ object ShoppingCart:
       items: Items[F],
       redis: RedisCommands[F, String, String],
       expiration: ShoppingCartExpiration
-  )(using F: Sync[F]): ShoppingCart[F] =
+  )(using F: MonadThrow[F]): ShoppingCart[F] =
     new ShoppingCart[F]:
       override def add(
           userId: UserId,
