@@ -1,10 +1,13 @@
 package com.kevchuang.shop.suite
 
+import cats.data.Kleisli
 import cats.effect.IO
 import cats.implicits.*
+import com.kevchuang.shop.http.auth.users.CommonUser
 import io.circe.Encoder
 import io.circe.syntax.*
 import org.http4s.circe.*
+import org.http4s.server.AuthMiddleware
 import org.http4s.{Status as HttpStatus, *}
 import weaver.scalacheck.Checkers
 import weaver.{Expectations, SimpleIOSuite}
@@ -14,6 +17,9 @@ import scala.util.control.NoStackTrace
 trait HttpSuite extends SimpleIOSuite with Checkers:
 
   case object DummyError extends NoStackTrace
+
+  def authMiddleware(authUser: CommonUser): AuthMiddleware[IO, CommonUser] =
+    AuthMiddleware(Kleisli.pure(authUser))
 
   def expectHttpBodyAndStatus[A: Encoder](
       routes: HttpRoutes[IO],

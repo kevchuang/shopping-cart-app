@@ -3,18 +3,9 @@ package com.kevchuang.shop.modules
 import cats.effect.Async
 import cats.syntax.all.*
 import com.kevchuang.shop.http.auth.users.CommonUser
-import com.kevchuang.shop.http.routes.auth.{
-  LoginRoutes,
-  LogoutRoutes,
-  UsersRoutes
-}
-import com.kevchuang.shop.http.routes.secured.CartRoutes
-import com.kevchuang.shop.http.routes.{
-  BrandsRoutes,
-  CategoriesRoutes,
-  HealthRoutes,
-  ItemsRoutes
-}
+import com.kevchuang.shop.http.routes.auth.{LoginRoutes, LogoutRoutes, UsersRoutes}
+import com.kevchuang.shop.http.routes.secured.{CartRoutes, OrdersRoutes}
+import com.kevchuang.shop.http.routes.{BrandsRoutes, CategoriesRoutes, HealthRoutes, ItemsRoutes}
 import dev.profunktor.auth.JwtAuthMiddleware
 import org.http4s.*
 import org.http4s.server.{AuthMiddleware, Router}
@@ -35,7 +26,8 @@ abstract sealed class HttpApi[F[_]: Async] private (
   private val users: UsersRoutes[F]   = UsersRoutes[F](security.auth)
 
   // secured routes
-  private val cart: CartRoutes[F] = CartRoutes[F](services.cart)
+  private val cart: CartRoutes[F]     = CartRoutes[F](services.cart)
+  private val orders: OrdersRoutes[F] = OrdersRoutes[F](services.orders)
 
   private val brands: BrandsRoutes[F] = BrandsRoutes[F](services.brands)
   private val categories: CategoriesRoutes[F] =
@@ -51,6 +43,7 @@ abstract sealed class HttpApi[F[_]: Async] private (
       items.routes <+>
       login.routes <+>
       logout.routes(userMiddleware) <+>
+      orders.routes(userMiddleware) <+>
       users.routes
 
   val httpApp: HttpApp[F] = Router[F]("/" -> routes).orNotFound

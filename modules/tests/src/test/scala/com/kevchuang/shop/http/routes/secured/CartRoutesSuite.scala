@@ -1,6 +1,5 @@
 package com.kevchuang.shop.http.routes.secured
 
-import cats.data.Kleisli
 import cats.effect.IO
 import com.kevchuang.shop.domain.auth.UserId
 import com.kevchuang.shop.domain.cart.{Cart, CartTotal}
@@ -16,13 +15,10 @@ import org.http4s.Method.*
 import org.http4s.Status as HttpStatus
 import org.http4s.circe.CirceEntityEncoder.*
 import org.http4s.client.dsl.io.*
-import org.http4s.server.AuthMiddleware
 import org.http4s.syntax.literals.*
 import squants.market.USD
 
 object CartRoutesSuite extends HttpSuite:
-  def authMiddleware(authUser: CommonUser): AuthMiddleware[IO, CommonUser] =
-    AuthMiddleware(Kleisli.pure(authUser))
 
   def dataCart(cartTotal: CartTotal) =
     new TestCart:

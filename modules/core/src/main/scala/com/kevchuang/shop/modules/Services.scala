@@ -13,7 +13,8 @@ sealed abstract class Services[F[_]] private (
     val cart: ShoppingCart[F],
     val categories: Categories[F],
     val healthCheck: HealthCheck[F],
-    val items: Items[F]
+    val items: Items[F],
+    val orders: Orders[F]
 )
 
 object Services:
@@ -28,5 +29,6 @@ object Services:
       cart = ShoppingCart.make[F](items, redis, cartExpiration),
       categories = Categories.make[F](postgres),
       healthCheck = HealthCheck.make[F](postgres, redis),
-      items = items
+      items = items,
+      orders = Orders.make[F](postgres)
     ) {}
