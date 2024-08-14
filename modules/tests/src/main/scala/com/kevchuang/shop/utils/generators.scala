@@ -4,8 +4,10 @@ import com.kevchuang.shop.domain.auth.*
 import com.kevchuang.shop.domain.brand.*
 import com.kevchuang.shop.domain.cart.*
 import com.kevchuang.shop.domain.category.*
+import com.kevchuang.shop.domain.checkout.*
 import com.kevchuang.shop.domain.item.*
-import com.kevchuang.shop.domain.types.common.NotEmpty
+import com.kevchuang.shop.domain.payment.*
+import com.kevchuang.shop.domain.types.common.{NotEmpty, Size}
 import com.kevchuang.shop.http.auth.users.*
 import io.github.iltotore.iron.*
 import io.github.iltotore.iron.constraint.all.*
@@ -51,6 +53,9 @@ object generators:
 
   val itemDescriptionGen: Gen[ItemDescription] =
     nesGen(ItemDescription(_))
+
+  val paymentIdGen: Gen[PaymentId] =
+    idGen(PaymentId(_))
 
   val priceGen: Gen[Money] =
     Gen.posNum[BigDecimal].map(USD(_))
@@ -122,4 +127,34 @@ object generators:
       t <- priceGen
     yield CartTotal(c, t)
 
+  val cardNameGen: Gen[CardName] =
+    Gen
+      .stringOf(Gen.oneOf(('a' to 'z') ++ ('A' to 'Z')))
+      .map(x => CardName(x.assume[CardNameConstraint]))
+
+  private def sized(size: Int): Gen[Long] =
+    def go(s: Int, acc: String): Gen[Long] =
+      Gen.oneOf(1 to 9).flatMap { n =>
+        if s == size then acc.toLong
+        else go(s + 1, acc + n.toString)
+      }
+
+    go(0, "")
+
+  val cardGen: Gen[Card] =
+    for
+      n <- cardNameGen
+      u <- sized(16).map(x => CardNumber(x.assume[Size[16]]))
+      x <- sized(4).map(x =>
+             CardExpiration(x.toString.assume[CardExpirationConstraint])
+           )
+      c <- sized(3).map(x => CardCVV(x.toInt.assume[Size[3]]))
+    yield Card(n, u, x, c)
+
+  val paymentGen: Gen[Payment] =
+    for
+      i <- userIdGen
+      t <- priceGen
+      c <- cardGen
+    yield Payment(i, t, c)
 end generators

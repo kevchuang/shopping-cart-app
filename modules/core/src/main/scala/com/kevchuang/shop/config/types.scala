@@ -2,6 +2,7 @@ package com.kevchuang.shop.config
 
 import com.kevchuang.shop.domain.types.common.NotEmpty
 import io.github.iltotore.iron.*
+import io.github.iltotore.iron.constraint.all.ValidURL
 
 import scala.concurrent.duration.FiniteDuration
 
@@ -16,4 +17,7 @@ object types:
   opaque type TokenExpiration = FiniteDuration :| Pure
   object TokenExpiration
       extends RefinedTypeOps[FiniteDuration, Pure, TokenExpiration]
+
+  opaque type PaymentURI = String :| ValidURL
+  object PaymentURI extends RefinedTypeOps[String, ValidURL, PaymentURI]
 end types

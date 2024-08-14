@@ -1,7 +1,7 @@
 package com.kevchuang.shop.config
 
-import cats.syntax.parallel.*
 import cats.effect.*
+import cats.syntax.parallel.*
 import ciris.*
 import com.comcast.ip4s.*
 import com.kevchuang.shop.config.PostgreSQLConfig.*
@@ -9,9 +9,9 @@ import com.kevchuang.shop.config.RedisConfig.RedisURI
 import com.kevchuang.shop.config.types.*
 import com.kevchuang.shop.domain.cart.ShoppingCartExpiration
 import io.github.iltotore.iron.*
-import io.github.iltotore.iron.constraint.all.*
 import io.github.iltotore.iron.cats.given
 import io.github.iltotore.iron.ciris.given
+import io.github.iltotore.iron.constraint.all.*
 
 import scala.concurrent.duration.*
 
@@ -22,15 +22,21 @@ final case class AppConfig(
     tokenExpiration: TokenExpiration,
     cartExpiration: ShoppingCartExpiration,
     postgreSQLConfig: PostgreSQLConfig,
-    redisConfig: RedisConfig
+    redisConfig: RedisConfig,
+    httpClientConfig: HttpClientConfig,
+    paymentConfig: PaymentConfig
 )
 
 object AppConfig:
   def load[F[_]: Async]: F[AppConfig] =
-    default[F](RedisURI("redis://localhost")).load[F]
+    default[F](
+      RedisURI("redis://localhost"),
+      PaymentURI("https://payments.free.beeceptor.com")
+    ).load[F]
 
   private def default[F[_]](
-      redisURI: RedisURI
+      redisURI: RedisURI,
+      paymentURI: PaymentURI
   ): ConfigValue[F, AppConfig] =
     (
       env("SC_ACCESS_TOKEN_SECRET_KEY").as[JwtAccessTokenKeyConfig].secret,
@@ -56,6 +62,13 @@ object AppConfig:
         ),
         RedisConfig(
           uri = redisURI
+        ),
+        HttpClientConfig(
+          timeout = 30.seconds,
+          idleTimeInPool = 60.seconds
+        ),
+        PaymentConfig(
+          uri = paymentURI
         )
       )
     }
