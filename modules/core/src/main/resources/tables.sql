@@ -28,3 +28,14 @@ CREATE TABLE items (
     REFERENCES categories (uuid) MATCH SIMPLE
     ON UPDATE NO ACTION ON DELETE NO ACTION
 );
+
+CREATE TABLE orders (
+  uuid UUID PRIMARY KEY,
+  user_id UUID NOT NULL,
+  payment_id UUID UNIQUE NOT NULL,
+  items JSONB NOT NULL,
+  total NUMERIC,
+  CONSTRAINT user_id_fkey FOREIGN KEY (user_id)
+    REFERENCES users (uuid) MATCH SIMPLE
+    ON UPDATE NO ACTION ON DELETE NO ACTION
+);

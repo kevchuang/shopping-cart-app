@@ -21,7 +21,7 @@ object cart:
       extends RefinedTypeOps[FiniteDuration, Pure, ShoppingCartExpiration]
 
   final case class Cart(items: Map[ItemId, Quantity]) derives Eq, Show
-  final case class CartItem(item: Item, quantity: Quantity):
+  final case class CartItem(item: Item, quantity: Quantity) derives Eq, Show:
     def subTotal: Money = USD(item.price.amount * quantity.value)
   end CartItem
 

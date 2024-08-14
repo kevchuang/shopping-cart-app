@@ -4,6 +4,8 @@ import com.kevchuang.shop.domain.auth.*
 import com.kevchuang.shop.domain.brand.*
 import com.kevchuang.shop.domain.category.*
 import com.kevchuang.shop.domain.item.*
+import com.kevchuang.shop.domain.order.OrderId
+import com.kevchuang.shop.domain.payment.PaymentId
 import com.kevchuang.shop.domain.types.common.NotEmpty
 import io.github.iltotore.iron.*
 import io.github.iltotore.iron.constraint.all.*
@@ -23,11 +25,15 @@ object codecs:
   val categoryName: Codec[CategoryName] =
     varchar.eimap(CategoryName.either(_))(_.value)
 
+  val orderId: Codec[OrderId] = uuid.imap(OrderId(_))(_.value)
+
   val itemDescription: Codec[ItemDescription] =
     varchar.imap(ItemDescription(_))(_.value)
   val itemId: Codec[ItemId] = uuid.imap(ItemId(_))(_.value)
   val itemName: Codec[ItemName] =
     varchar.eimap(_.refineEither[NotEmpty].map(ItemName(_)))(_.value)
+
+  val paymentId: Codec[PaymentId] = uuid.imap(PaymentId(_))(_.value)
 
   val price: Codec[Money] = numeric.imap[Money](USD(_))(_.amount)
 

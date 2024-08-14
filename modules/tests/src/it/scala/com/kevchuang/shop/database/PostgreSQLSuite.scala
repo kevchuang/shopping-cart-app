@@ -1,15 +1,19 @@
 package com.kevchuang.shop.database
 
+import cats.data.NonEmptyList
 import cats.effect.*
 import cats.implicits.*
 import com.kevchuang.shop.domain.brand.BrandId
 import com.kevchuang.shop.domain.category.CategoryId
+import com.kevchuang.shop.domain.given
 import com.kevchuang.shop.domain.item.CreateItem
-import com.kevchuang.shop.services.{Brands, Categories, Items, Users}
+import com.kevchuang.shop.domain.order.Order
+import com.kevchuang.shop.services.*
 import com.kevchuang.shop.suite.ResourceSuite
 import com.kevchuang.shop.utils.generators.*
 import io.github.iltotore.iron.cats.given
 import natchez.Trace.Implicits.noop
+import org.scalacheck.Gen
 import skunk.*
 import skunk.implicits.*
 
@@ -78,6 +82,38 @@ object PostgreSQLSuite extends ResourceSuite:
         x.isEmpty,
         y.count(_.name === item.name) === 1,
         itemById === Some(headItem)
+      )
+    }
+  }
+
+  test("Orders") { postgres =>
+    val gen = for
+      randomOid <- orderIdGen
+      uid       <- userIdGen
+      pid       <- paymentIdGen
+      items     <- Gen.nonEmptyListOf(cartItemGen).map(NonEmptyList.fromListUnsafe)
+      total     <- priceGen
+    yield (randomOid, uid, pid, items, total)
+
+    forall(gen) { (randomOid, uid, pid, items, total) =>
+      val o = Orders.make[IO](postgres)
+
+      for
+        emptyOrder <- o.get(uid, randomOid)
+        oid        <- o.create(uid, pid, items, total)
+        order      <- o.get(uid, oid)
+        expectedOrder =
+          Order(
+            oid,
+            pid,
+            items.map(i => (i.item.uuid, i.quantity)).toList.toMap,
+            total
+          )
+        find <- o.findBy(uid)
+      yield expect.all(
+        emptyOrder.isEmpty,
+        order.contains(expectedOrder),
+        find.nonEmpty
       )
     }
   }

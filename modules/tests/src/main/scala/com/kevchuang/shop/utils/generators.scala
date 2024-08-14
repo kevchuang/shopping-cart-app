@@ -6,6 +6,7 @@ import com.kevchuang.shop.domain.cart.*
 import com.kevchuang.shop.domain.category.*
 import com.kevchuang.shop.domain.checkout.*
 import com.kevchuang.shop.domain.item.*
+import com.kevchuang.shop.domain.order.*
 import com.kevchuang.shop.domain.payment.*
 import com.kevchuang.shop.domain.types.common.{NotEmpty, Size}
 import com.kevchuang.shop.http.auth.users.*
@@ -44,6 +45,9 @@ object generators:
 
   val categoryNameGen: Gen[CategoryName] =
     nesGen(CategoryName(_))
+
+  val orderIdGen: Gen[OrderId] =
+    idGen(OrderId(_))
 
   val itemIdGen: Gen[ItemId] =
     idGen(ItemId(_))
@@ -157,4 +161,13 @@ object generators:
       t <- priceGen
       c <- cardGen
     yield Payment(i, t, c)
+
+  val orderGen: Gen[Order] =
+    for
+      oid   <- orderIdGen
+      pid   <- paymentIdGen
+      items <- Gen.mapOf(itemMapGen)
+      t     <- priceGen
+    yield Order(oid, pid, items, t)
+
 end generators

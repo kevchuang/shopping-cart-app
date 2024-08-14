@@ -69,7 +69,8 @@ object Dependencies {
   )
 
   val skunk: List[ModuleID] = List(
-    "org.tpolecat" %% "skunk-core" % skunkVersion
+    "org.tpolecat" %% "skunk-core" % skunkVersion,
+    "org.tpolecat" %% "skunk-circe" % skunkVersion
   )
 
   val squants: List[ModuleID] = List(
