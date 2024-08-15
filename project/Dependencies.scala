@@ -3,6 +3,7 @@ import sbt.*
 object Dependencies {
   private val catsCoreVersion = "2.12.0"
   private val catsEffectVersion = "3.5.0"
+  private val catsRetryVersion = "3.1.3"
   private val circeVersion = "0.14.9"
   private val cirisVersion = "3.2.0"
   private val fs2Version = "3.10.2"
@@ -19,7 +20,8 @@ object Dependencies {
 
   val cats: List[ModuleID] = List(
     "org.typelevel" %% "cats-core" % catsCoreVersion,
-    "org.typelevel" %% "cats-effect" % catsEffectVersion
+    "org.typelevel" %% "cats-effect" % catsEffectVersion,
+    "com.github.cb372" %% "cats-retry" % catsRetryVersion
   )
 
   val circe: List[ModuleID] = List(

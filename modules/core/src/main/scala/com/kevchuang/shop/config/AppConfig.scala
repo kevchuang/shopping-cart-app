@@ -21,6 +21,7 @@ final case class AppConfig(
     passwordSalt: Secret[PasswordSalt],
     tokenExpiration: TokenExpiration,
     cartExpiration: ShoppingCartExpiration,
+    checkoutConfig: CheckoutConfig,
     postgreSQLConfig: PostgreSQLConfig,
     redisConfig: RedisConfig,
     httpClientConfig: HttpClientConfig,
@@ -52,6 +53,10 @@ object AppConfig:
         passwordSalt,
         TokenExpiration(30.minutes),
         ShoppingCartExpiration(30.minutes),
+        CheckoutConfig(
+          retriesLimit = RetryLimit(3),
+          retriesBackoff = 10.milliseconds
+        ),
         PostgreSQLConfig(
           host = HostName("localhost"),
           port = PortNumber(5432),

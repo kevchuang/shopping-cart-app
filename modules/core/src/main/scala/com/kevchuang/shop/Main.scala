@@ -24,12 +24,21 @@ object Main extends IOApp:
                  Security
                    .make[IO](config, resources.postgres, resources.redis)
                    .map { security =>
+                     val clients = HttpClients.make[IO](
+                       config.paymentConfig,
+                       resources.client
+                     )
                      val services = Services.make[IO](
                        resources.postgres,
                        resources.redis,
                        config.cartExpiration
                      )
-                     val api = HttpApi.make[IO](security, services)
+                     val programs = Programs.make[IO](
+                       config.checkoutConfig,
+                       services,
+                       clients
+                     )
+                     val api = HttpApi.make[IO](programs, security, services)
                      config.httpServerConfig -> api.httpApp
                    }
                .flatMap:

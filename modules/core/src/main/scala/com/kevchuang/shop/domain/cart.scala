@@ -13,6 +13,7 @@ import squants.Money
 import squants.market.USD
 
 import scala.concurrent.duration.FiniteDuration
+import scala.util.control.NoStackTrace
 
 object cart:
 
@@ -28,6 +29,8 @@ object cart:
   final case class CartTotal(items: List[CartItem], total: Money)
       derives Eq,
         Show
+
+  case object EmptyCartError extends NoStackTrace derives Show
 
   // codecs
   given Encoder[CartTotal] = Encoder.derived

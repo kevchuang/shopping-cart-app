@@ -2,7 +2,7 @@ package com.kevchuang.shop.config
 
 import com.kevchuang.shop.domain.types.common.NotEmpty
 import io.github.iltotore.iron.*
-import io.github.iltotore.iron.constraint.all.ValidURL
+import io.github.iltotore.iron.constraint.all.*
 
 import scala.concurrent.duration.FiniteDuration
 
@@ -20,4 +20,7 @@ object types:
 
   opaque type PaymentURI = String :| ValidURL
   object PaymentURI extends RefinedTypeOps[String, ValidURL, PaymentURI]
+
+  opaque type RetryLimit = Int :| Positive
+  object RetryLimit extends RefinedTypeOps[Int, Positive, RetryLimit]
 end types

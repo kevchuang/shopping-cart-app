@@ -24,10 +24,14 @@ object order:
   ) derives Eq,
         Show
 
-  sealed trait OrderOrPaymentError extends NoStackTrace:
+  sealed trait OrderOrPaymentError extends NoStackTrace derives Eq, Show:
     def cause: String
   end OrderOrPaymentError
 
   final case class PaymentError(cause: String) extends OrderOrPaymentError
-  final case class OrderError(cause: String)   extends OrderOrPaymentError
+      derives Eq,
+        Show
+  final case class OrderError(cause: String) extends OrderOrPaymentError
+      derives Eq,
+        Show
 end order
