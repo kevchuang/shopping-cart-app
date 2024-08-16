@@ -62,7 +62,8 @@ object Dependencies {
   )
 
   val log4cats: List[ModuleID] = List(
-    "org.typelevel" %% "log4cats-slf4j" % log4CatsVersion
+    "org.typelevel" %% "log4cats-slf4j" % log4CatsVersion,
+    "org.typelevel" %% "log4cats-noop" % log4CatsVersion
   )
 
   val redis4cats: List[ModuleID] = List(

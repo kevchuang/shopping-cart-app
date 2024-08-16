@@ -25,7 +25,7 @@ final case class Checkout[F[_]: MonadThrow: Background: Retry: Logger](
     orders: Orders[F],
     payment: PaymentClient[F],
     retryPolicy: RetryPolicy[F]
-                                                                      ):
+):
   private def ensureNonEmptyCart(
       items: List[CartItem]
   ): F[NonEmptyList[CartItem]] =

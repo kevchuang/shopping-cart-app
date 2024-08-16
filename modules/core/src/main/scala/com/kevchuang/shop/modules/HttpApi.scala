@@ -3,22 +3,9 @@ package com.kevchuang.shop.modules
 import cats.effect.Async
 import cats.syntax.all.*
 import com.kevchuang.shop.http.auth.users.CommonUser
-import com.kevchuang.shop.http.routes.auth.{
-  LoginRoutes,
-  LogoutRoutes,
-  UsersRoutes
-}
-import com.kevchuang.shop.http.routes.secured.{
-  CartRoutes,
-  CheckoutRoutes,
-  OrdersRoutes
-}
-import com.kevchuang.shop.http.routes.{
-  BrandsRoutes,
-  CategoriesRoutes,
-  HealthRoutes,
-  ItemsRoutes
-}
+import com.kevchuang.shop.http.routes.*
+import com.kevchuang.shop.http.routes.auth.*
+import com.kevchuang.shop.http.routes.secured.*
 import dev.profunktor.auth.JwtAuthMiddleware
 import org.http4s.*
 import org.http4s.server.{AuthMiddleware, Router}
