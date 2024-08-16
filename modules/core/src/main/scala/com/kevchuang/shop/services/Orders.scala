@@ -89,13 +89,13 @@ object OrdersSQL:
   val selectByUserId: Query[UserId, Order] =
     sql"""
       SELECT * FROM orders
-      WHERE userId = $userId
+      WHERE user_id = $userId
     """.query(decoder)
 
   val selectByUserIdAndOrderId: Query[UserId ~ OrderId, Order] =
     sql"""
       SELECT * FROM orders
-      WHERE userId = $userId AND uuid = $orderId
+      WHERE user_id = $userId AND uuid = $orderId
     """.query(decoder)
 
 end OrdersSQL

@@ -89,16 +89,19 @@ object PostgreSQLSuite extends ResourceSuite:
   test("Orders") { postgres =>
     val gen = for
       randomOid <- orderIdGen
-      uid       <- userIdGen
+      un        <- userNameGen
+      pw        <- encryptedPasswordGen
       pid       <- paymentIdGen
       items     <- Gen.nonEmptyListOf(cartItemGen).map(NonEmptyList.fromListUnsafe)
       total     <- priceGen
-    yield (randomOid, uid, pid, items, total)
+    yield (randomOid, un, pw, pid, items, total)
 
-    forall(gen) { (randomOid, uid, pid, items, total) =>
+    forall(gen) { (randomOid, un, pw, pid, items, total) =>
       val o = Orders.make[IO](postgres)
+      val u = Users.make[IO](postgres)
 
       for
+        uid        <- u.create(un, pw)
         emptyOrder <- o.get(uid, randomOid)
         oid        <- o.create(uid, pid, items, total)
         order      <- o.get(uid, oid)
